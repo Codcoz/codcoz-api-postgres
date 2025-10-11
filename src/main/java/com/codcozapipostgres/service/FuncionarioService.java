@@ -25,8 +25,8 @@ public class FuncionarioService {
         return objectMapper.convertValue(funcionario, FuncionarioResponseDTO.class);
     }
 
-    public FuncionarioResponseDTO findEstoquistaByEmail (String email){
-        Funcionario funcionario = funcionarioRepository.findByEmail(email);
+    public FuncionarioResponseDTO buscarEstoquistaPorEmail(String email){
+        Funcionario funcionario = funcionarioRepository.buscarPorEmail(email);
         if(funcionario == null){
             throw new EntityNotFoundException("Estoquista não registado no banco.");
         }

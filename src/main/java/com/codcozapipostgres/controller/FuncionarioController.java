@@ -4,10 +4,7 @@ import com.codcozapipostgres.dto.FuncionarioResponseDTO;
 import com.codcozapipostgres.service.FuncionarioService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/estoquista")
@@ -18,10 +15,10 @@ public class FuncionarioController {
         this.funcionarioService = funcionarioService;
     }
 
-    @GetMapping("/buscar")
-    public ResponseEntity<FuncionarioResponseDTO> buscarEstoquista(@RequestParam String email){
+    @GetMapping("/buscar/{email}")
+    public ResponseEntity<FuncionarioResponseDTO> buscarEstoquista(@PathVariable String email){
         try{
-            FuncionarioResponseDTO estoquista = funcionarioService.findEstoquistaByEmail(email);
+            FuncionarioResponseDTO estoquista = funcionarioService.buscarEstoquistaPorEmail(email);
             return ResponseEntity.ok(estoquista);
         }catch(EntityNotFoundException e){
             return ResponseEntity.notFound().build();
