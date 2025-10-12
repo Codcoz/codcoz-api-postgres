@@ -3,7 +3,6 @@ package com.codcozapipostgres.controller;
 import com.codcozapipostgres.dto.TarefaResponseDTO;
 import com.codcozapipostgres.service.TarefaService;
 import jakarta.persistence.EntityNotFoundException;
-import org.hibernate.annotations.NotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +17,8 @@ public class TarefaController {
     public TarefaController(TarefaService tarefaService) {
         this.tarefaService = tarefaService;
     }
-    @GetMapping("/buscar-data")
-    public ResponseEntity<List<TarefaResponseDTO>> buscarTarefaPorData(@RequestParam LocalDate data, @RequestParam String email) {
+    @GetMapping("/buscar-data/{email}")
+    public ResponseEntity<List<TarefaResponseDTO>> buscarTarefaPorData(@PathVariable String email,@RequestParam LocalDate data) {
         try {
             List<TarefaResponseDTO> tarefas = tarefaService.buscarTarefaPorData(data, email);
             return ResponseEntity.ok(tarefas);
@@ -29,8 +28,8 @@ public class TarefaController {
             return ResponseEntity.badRequest().build();
         }
     }
-    @GetMapping("/buscar-periodo")
-    public ResponseEntity<List<TarefaResponseDTO>> buscarTarefaPorPeriodo(@RequestParam(name = "data_inicio") LocalDate dataInicio, @RequestParam(name="data_fim") LocalDate dataFim, @RequestParam String email) {
+    @GetMapping("/buscar-periodo/{email}")
+    public ResponseEntity<List<TarefaResponseDTO>> buscarTarefaPorPeriodo(@PathVariable String email,@RequestParam(name = "data_inicio") LocalDate dataInicio, @RequestParam(name="data_fim") LocalDate dataFim) {
         try {
             List<TarefaResponseDTO> tarefas = tarefaService.buscarTarefaPorPeriodo(dataInicio,dataFim, email);
             return ResponseEntity.ok(tarefas);
@@ -41,8 +40,8 @@ public class TarefaController {
         }
     }
 
-    @GetMapping("/buscar-tipo")
-    public ResponseEntity<List<TarefaResponseDTO>> buscarTarefaPorTipo(@RequestParam(name="data_inicio") LocalDate dataInicio, @RequestParam(name="data_fim") LocalDate dataFim, @RequestParam String email, @RequestParam String tipo) {
+    @GetMapping("/buscar-por-tipo/{email}")
+    public ResponseEntity<List<TarefaResponseDTO>> buscarTarefaPorTipo(@PathVariable String email,@RequestParam(name="data_inicio") LocalDate dataInicio, @RequestParam(name="data_fim") LocalDate dataFim, @RequestParam String tipo) {
         try{
             List<TarefaResponseDTO> tarefas = tarefaService.buscarTarefaPorTipo(dataInicio,dataFim,email,tipo);
             return ResponseEntity.ok(tarefas);
