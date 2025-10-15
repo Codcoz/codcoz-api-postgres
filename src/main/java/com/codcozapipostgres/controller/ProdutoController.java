@@ -46,7 +46,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/listar/estoque-baixo/{idEmpresa}")
-    public ResponseEntity<List<ProdutoResponseDTO>> listarEstoque(@PathVariable Integer idEmpresa){
+    public ResponseEntity<List<ProdutoResponseDTO>> listarEstoqueBaixo(@PathVariable Integer idEmpresa){
         try{
             return ResponseEntity.ok(produtoService.listarProdutosEstoqueBaixo(idEmpresa));
         } catch (RuntimeException e) {
@@ -59,6 +59,15 @@ public class ProdutoController {
         try{
             return ResponseEntity.ok(produtoService.listarProdutosProximosValidade(idEmpresa));
         } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/listar/estoque/{idEmpresa}")
+    public ResponseEntity<List<ProdutoResponseDTO>> listarEstoque(@PathVariable Integer idEmpresa){
+        try{
+            return ResponseEntity.ok(produtoService.listarProdutosEstoque(idEmpresa));
+        }catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

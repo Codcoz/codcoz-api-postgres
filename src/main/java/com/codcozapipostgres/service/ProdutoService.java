@@ -63,4 +63,11 @@ public class ProdutoService {
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<ProdutoResponseDTO> listarProdutosEstoque(Integer idEmpresa) {
+        List<Produto> produtos = produtoRepository.listarEstoque(idEmpresa);
+        return produtos.stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
+    }
 }

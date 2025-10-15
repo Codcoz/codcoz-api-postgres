@@ -30,4 +30,7 @@ public interface ProdutoRepository extends JpaRepository<Produto,Long> {
             "AND p.validade >= CURRENT_DATE " +
             "AND p.empresa_id = (:idEmpresa)",nativeQuery = true)
     List<Produto> listarProximoValidade(@Param("idEmpresa") Integer idEmpresa);
+
+    @Query(value = "SELECT * FROM produto p WHERE p.empresa_id = (:id)",nativeQuery = true)
+    List<Produto> listarEstoque(@Param("id") Integer idEmpresa);
 }
