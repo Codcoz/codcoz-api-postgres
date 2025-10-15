@@ -28,7 +28,7 @@ public class ProdutoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-    @GetMapping("/quantidade-estoque-baixo/{idEmpresa}")
+    @GetMapping("/quantidade/estoque-baixo/{idEmpresa}")
     public ResponseEntity<Integer> quantidadeEstoqueBaixo(@PathVariable Integer idEmpresa){
         try{
             return ResponseEntity.ok(produtoService.quantidadeProdutosEstoqueBaixo(idEmpresa));
@@ -36,7 +36,7 @@ public class ProdutoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-    @GetMapping("/quantidade-proximo-validade/{idEmpresa}")
+    @GetMapping("/quantidade/proximo-validade/{idEmpresa}")
     public ResponseEntity<Integer> quantidadeProximoValidade(@PathVariable Integer idEmpresa){
         try{
             return ResponseEntity.ok(produtoService.quantidadeProdutosProximosValidade(idEmpresa));
