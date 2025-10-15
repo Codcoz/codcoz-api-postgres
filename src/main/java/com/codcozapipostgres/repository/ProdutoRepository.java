@@ -19,4 +19,9 @@ public interface ProdutoRepository extends JpaRepository<Produto,Long> {
     @Query(value = "SELECT * FROM func_conta_produto(:idEmpresa)",nativeQuery = true)
     Integer contarProdutosEmEstoque(@Param("idEmpresa") Integer idEmpresa);
 
+    @Query(value = "SELECT p.* FROM produto p " +
+            "JOIN ingrediente i ON p.ingrediente_id = i.id " +
+            "WHERE p.quantidade < i.quantidade_minima " +
+            "AND p.empresa_id = (:idEmpresa)", nativeQuery = true)
+    List<Produto> listarEstoqueBaixo(@Param("idEmpresa") Integer idEmpresa);
 }

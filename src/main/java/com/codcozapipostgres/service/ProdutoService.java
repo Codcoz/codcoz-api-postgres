@@ -9,6 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProdutoService {
@@ -47,5 +48,12 @@ public class ProdutoService {
             throw new EntityNotFoundException("Empresa não cadastrada.");
         }
         return quantidade;
+    }
+
+    public List<ProdutoResponseDTO> listarProdutosEstoqueBaixo(Integer idEmpresa) {
+        List<Produto> produtos = produtoRepository.listarEstoqueBaixo(idEmpresa);
+        return produtos.stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
     }
 }

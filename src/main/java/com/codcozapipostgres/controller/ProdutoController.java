@@ -1,5 +1,6 @@
 package com.codcozapipostgres.controller;
 
+import com.codcozapipostgres.dto.ProdutoResponseDTO;
 import com.codcozapipostgres.service.ProdutoService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/produto")
@@ -39,6 +42,15 @@ public class ProdutoController {
             return ResponseEntity.ok(produtoService.quantidadeProdutosProximosValidade(idEmpresa));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping("/listar/estoque-baixo/{idEmpresa}")
+    public ResponseEntity<List<ProdutoResponseDTO>> listarEstoque(@PathVariable Integer idEmpresa){
+        try{
+            return ResponseEntity.ok(produtoService.listarProdutosEstoqueBaixo(idEmpresa));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
