@@ -33,4 +33,7 @@ public interface ProdutoRepository extends JpaRepository<Produto,Long> {
 
     @Query(value = "SELECT * FROM produto p WHERE p.empresa_id = (:id)",nativeQuery = true)
     List<Produto> listarEstoque(@Param("id") Integer idEmpresa);
+
+    @Query(value = "SELECT * FROM produto p WHERE p.codigo_ean = CAST(:id AS VARCHAR)",nativeQuery = true)
+    Produto buscarProdutoPorCodigoEan(@Param("id") Long codigoEan);
 }

@@ -70,4 +70,8 @@ public class ProdutoService {
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
+
+    public ProdutoResponseDTO buscarProdutoPorCodigoEan(Long codigoEan) {
+        return toResponseDTO(produtoRepository.buscarProdutoPorCodigoEan(codigoEan));
+    }
 }
