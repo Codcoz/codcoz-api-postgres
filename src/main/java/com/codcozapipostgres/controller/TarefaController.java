@@ -17,6 +17,7 @@ public class TarefaController {
     public TarefaController(TarefaService tarefaService) {
         this.tarefaService = tarefaService;
     }
+
     @GetMapping("/buscar-data/{email}")
     public ResponseEntity<List<TarefaResponseDTO>> buscarTarefaPorData(@PathVariable String email,@RequestParam LocalDate data) {
         try {
