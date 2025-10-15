@@ -56,4 +56,11 @@ public class ProdutoService {
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<ProdutoResponseDTO> listarProdutosProximosValidade(Integer idEmpresa) {
+        List<Produto> produtos = produtoRepository.listarProximoValidade(idEmpresa);
+        return produtos.stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
+    }
 }
