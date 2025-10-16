@@ -3,13 +3,16 @@ name: API Health Check
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/13 * * * *" # Roda a cada 13 minutos (tempo do idle)
+    - cron: "*/10 * * * *"
 
 jobs:
   alive_check:
     runs-on: ubuntu-latest
     steps:
+      - name: Esperar um tempo aleatório
+        run: sleep $((RANDOM % 30))
       - name: Ping /alive endpoint
         run: |
           echo "Pingando a API..."
           curl -v --fail https://codcoz-api-postgres.onrender.com/alive
+
