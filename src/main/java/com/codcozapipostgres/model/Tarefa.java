@@ -1,9 +1,17 @@
 package com.codcozapipostgres.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "tarefa")
 public class Tarefa {
@@ -31,100 +39,4 @@ public class Tarefa {
     private LocalDate dataLimite;
     @Column(name = "data_conclusao")
     private LocalDate dataConclusao;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getEmpresaId() {
-        return empresaId;
-    }
-
-    public void setEmpresaId(Long empresaId) {
-        this.empresaId = empresaId;
-    }
-
-    public Long getTipoTarefaId() {
-        return tipoTarefaId;
-    }
-
-    public void setTipoTarefaId(Long tipoTarefaId) {
-        this.tipoTarefaId = tipoTarefaId;
-    }
-
-    public Long getIngredienteId() {
-        return ingredienteId;
-    }
-
-    public void setIngredienteId(Long ingredienteId) {
-        this.ingredienteId = ingredienteId;
-    }
-
-    public Long getRelatorId() {
-        return relatorId;
-    }
-
-    public void setRelatorId(Long relatorId) {
-        this.relatorId = relatorId;
-    }
-
-    public Long getResponsavelId() {
-        return responsavelId;
-    }
-
-    public void setResponsavelId(Long responsavelId) {
-        this.responsavelId = responsavelId;
-    }
-
-    public Long getPedidoId() {
-        return pedidoId;
-    }
-
-    public void setPedidoId(Long pedidoId) {
-        this.pedidoId = pedidoId;
-    }
-
-    public String getSituacao() {
-        return situacao;
-    }
-
-    public void setSituacao(String situacao) {
-        this.situacao = situacao;
-    }
-
-    public LocalDate getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public void setDataCriacao(LocalDate dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
-    public LocalDate getDataTarefa() {
-        return dataTarefa;
-    }
-
-    public void setDataTarefa(LocalDate dataTarefa) {
-        this.dataTarefa = dataTarefa;
-    }
-
-    public LocalDate getDataLimite() {
-        return dataLimite;
-    }
-
-    public void setDataLimite(LocalDate dataLimite) {
-        this.dataLimite = dataLimite;
-    }
-
-    public LocalDate getDataConclusao() {
-        return dataConclusao;
-    }
-
-    public void setDataConclusao(LocalDate dataConclusao) {
-        this.dataConclusao = dataConclusao;
-    }
 }

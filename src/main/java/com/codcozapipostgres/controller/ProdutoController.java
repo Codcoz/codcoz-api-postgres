@@ -2,6 +2,8 @@ package com.codcozapipostgres.controller;
 
 import com.codcozapipostgres.dto.ProdutoResponseDTO;
 import com.codcozapipostgres.service.ProdutoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+@Tag(name = "Produtos", description = "Operações para gerenciar os produtos em estoque.")
 @Controller
 @RequestMapping("/produto")
 public class ProdutoController {
@@ -20,6 +23,8 @@ public class ProdutoController {
         this.produtoService = produtoService;
     }
 
+    @Operation(summary = "Verificar a quantidade de produtos no estoque.",
+            description = "Método para verificar a quantidade de itens no estoque, passando como parâ")
     @GetMapping("/quantidade-estoque/{idEmpresa}")
     public ResponseEntity<Integer> quantidadeEstoque(@PathVariable Integer idEmpresa){
         try{
@@ -54,7 +59,7 @@ public class ProdutoController {
         }
     }
 
-    @GetMapping("/listar/proximos-validade/{idEmpresa}")
+    @GetMapping("/listar/proximo-validade/{idEmpresa}")
     public ResponseEntity<List<ProdutoResponseDTO>> listarProximosValidade(@PathVariable Integer idEmpresa){
         try{
             return ResponseEntity.ok(produtoService.listarProdutosProximosValidade(idEmpresa));
