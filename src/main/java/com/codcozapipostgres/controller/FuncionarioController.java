@@ -17,11 +17,7 @@ public class FuncionarioController {
 
     @GetMapping("/buscar/{email}")
     public ResponseEntity<FuncionarioResponseDTO> buscarEstoquista(@PathVariable String email){
-        try{
-            FuncionarioResponseDTO estoquista = funcionarioService.buscarEstoquistaPorEmail(email);
-            return ResponseEntity.ok(estoquista);
-        }catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+        FuncionarioResponseDTO estoquista = funcionarioService.buscarEstoquistaPorEmail(email);
+        return ResponseEntity.ok(estoquista);
     }
 }
