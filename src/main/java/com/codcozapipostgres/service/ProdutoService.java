@@ -6,6 +6,8 @@ import com.codcozapipostgres.model.Produto;
 import com.codcozapipostgres.repository.ProdutoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 public class ProdutoService {
     private final ProdutoRepository produtoRepository;
     private final ObjectMapper objectMapper;
+
     public ProdutoService(ProdutoRepository produtoRepository, ObjectMapper objectMapper) {
         this.produtoRepository = produtoRepository;
         this.objectMapper = objectMapper;
@@ -23,63 +26,94 @@ public class ProdutoService {
         return objectMapper.convertValue(produtoRequestDTO, Produto.class);
     }
     private ProdutoResponseDTO toResponseDTO(Produto produto) {
+        if (produto == null) {
+            throw new EntityNotFoundException("Produto não encontrado.");
+        }
         return objectMapper.convertValue(produto, ProdutoResponseDTO.class);
     }
 
-    public Integer quantidadeProdutosEstoque(Integer idEmpresa){
-        Integer quantidade = produtoRepository.contarProdutosEmEstoque(idEmpresa);
-        if (quantidade == null){
-            throw new EntityNotFoundException("Empresa não cadastrada.");
+    public Integer quantidadeProdutosEstoque(Integer idEmpresa) {
+        try {
+            Integer quantidade = produtoRepository.contarProdutosEmEstoque(idEmpresa);
+            if (quantidade == null) {
+                throw new EntityNotFoundException("Empresa não encontrada ou sem produtos cadastrados.");
+            }
+            return quantidade;
+        } catch (DataAccessException e) {
+            throw new PersistenceException("Erro ao acessar o banco de dados.", e);
         }
-        return quantidade;
     }
 
-    public Integer quantidadeProdutosEstoqueBaixo(Integer idEmpresa){
-        Integer quantidade = produtoRepository.contarProdutosBaixoEstoque(idEmpresa);
-        if (quantidade == null){
-            throw new EntityNotFoundException("Empresa não cadastrada.");
+    public Integer quantidadeProdutosEstoqueBaixo(Integer idEmpresa) {
+        try {
+            Integer quantidade = produtoRepository.contarProdutosBaixoEstoque(idEmpresa);
+            if (quantidade == null) {
+                throw new EntityNotFoundException("Empresa não encontrada ou sem produtos cadastrados.");
+            }
+            return quantidade;
+        } catch (DataAccessException e) {
+            throw new PersistenceException("Erro ao acessar o banco de dados.", e);
         }
-        return quantidade;
     }
 
-    public Integer quantidadeProdutosProximosValidade(Integer idEmpresa){
-        Integer quantidade = produtoRepository.contarProdutosProximosValidade(idEmpresa);
-        if (quantidade == null){
-            throw new EntityNotFoundException("Empresa não cadastrada.");
+    public Integer quantidadeProdutosProximosValidade(Integer idEmpresa) {
+        try {
+            Integer quantidade = produtoRepository.contarProdutosProximosValidade(idEmpresa);
+            if (quantidade == null) {
+                throw new EntityNotFoundException("Empresa não encontrada ou sem produtos cadastrados.");
+            }
+            return quantidade;
+        } catch (DataAccessException e) {
+            throw new PersistenceException("Erro ao acessar o banco de dados.", e);
         }
-        return quantidade;
     }
 
     public List<ProdutoResponseDTO> listarProdutosEstoqueBaixo(Integer idEmpresa) {
         List<Produto> produtos = produtoRepository.listarEstoqueBaixo(idEmpresa);
-        return produtos.stream()
-                .map(this::toResponseDTO)
-                .collect(Collectors.toList());
+        if (produtos == null || produtos.isEmpty()) {
+            throw new EntityNotFoundException("Nenhum produto com estoque baixo encontrado para esta empresa.");
+        }
+        return produtos.stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
 
     public List<ProdutoResponseDTO> listarProdutosProximosValidade(Integer idEmpresa) {
         List<Produto> produtos = produtoRepository.listarProximoValidade(idEmpresa);
-        return produtos.stream()
-                .map(this::toResponseDTO)
-                .collect(Collectors.toList());
+        if (produtos == null || produtos.isEmpty()) {
+            throw new EntityNotFoundException("Nenhum produto próximo da validade encontrado para esta empresa.");
+        }
+        return produtos.stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
 
     public List<ProdutoResponseDTO> listarProdutosEstoque(Integer idEmpresa) {
         List<Produto> produtos = produtoRepository.listarEstoque(idEmpresa);
-        return produtos.stream()
-                .map(this::toResponseDTO)
-                .collect(Collectors.toList());
+        if (produtos == null || produtos.isEmpty()) {
+            throw new EntityNotFoundException("Nenhum produto encontrado no estoque para esta empresa.");
+        }
+        return produtos.stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
 
     public ProdutoResponseDTO buscarProdutoPorCodigoEan(String codigoEan) {
-        return toResponseDTO(produtoRepository.buscarProdutoPorCodigoEan(codigoEan));
+        Produto produto = produtoRepository.buscarProdutoPorCodigoEan(codigoEan);
+        if (produto == null) {
+            throw new EntityNotFoundException("Produto com código EAN " + codigoEan + " não encontrado.");
+        }
+        return toResponseDTO(produto);
     }
 
-    public void novaEntrada(String codigoEan,Integer quantidade){
-        produtoRepository.movimentaProdutos(codigoEan,quantidade);
+    public void novaEntrada(String codigoEan, Integer quantidade) {
+        try {
+            produtoRepository.movimentaProdutos(codigoEan, quantidade);
+        } catch (DataAccessException e) {
+            throw new PersistenceException("Erro ao registrar nova entrada de produto com código EAN " + codigoEan, e);
+        }
     }
-    public void novaBaixa(String codigoEan,Integer quantidade){
-        Integer quantNegativa = -Math.abs(quantidade);
-        produtoRepository.movimentaProdutos(codigoEan,quantNegativa);
+
+    public void novaBaixa(String codigoEan, Integer quantidade) {
+        try {
+            Integer quantNegativa = -Math.abs(quantidade);
+            produtoRepository.movimentaProdutos(codigoEan, quantNegativa);
+        } catch (DataAccessException e) {
+            throw new PersistenceException("Erro ao registrar baixa de produto com código EAN " + codigoEan, e);
+        }
     }
 }
