@@ -71,7 +71,15 @@ public class ProdutoService {
                 .collect(Collectors.toList());
     }
 
-    public ProdutoResponseDTO buscarProdutoPorCodigoEan(Long codigoEan) {
+    public ProdutoResponseDTO buscarProdutoPorCodigoEan(String codigoEan) {
         return toResponseDTO(produtoRepository.buscarProdutoPorCodigoEan(codigoEan));
+    }
+
+    public void novaEntrada(String codigoEan,Integer quantidade){
+        produtoRepository.movimentaProdutos(codigoEan,quantidade);
+    }
+    public void novaBaixa(String codigoEan,Integer quantidade){
+        Integer quantNegativa = -Math.abs(quantidade);
+        produtoRepository.movimentaProdutos(codigoEan,quantNegativa);
     }
 }

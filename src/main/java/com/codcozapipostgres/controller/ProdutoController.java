@@ -8,9 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -52,7 +50,19 @@ public class ProdutoController {
     }
 
     @GetMapping("/buscar/{codigoEan}")
-    public ResponseEntity<ProdutoResponseDTO> buscarProdutoPorCodigoEan(@PathVariable Long codigoEan){
+    public ResponseEntity<ProdutoResponseDTO> buscarProdutoPorCodigoEan(@PathVariable String codigoEan) {
         return ResponseEntity.ok(produtoService.buscarProdutoPorCodigoEan(codigoEan));
     }
+
+    @PutMapping("/entrada/{codigoEan}")
+    public ResponseEntity<String> entradaProduto(@PathVariable String codigoEan, @RequestParam Integer quantidade){
+        produtoService.novaEntrada(codigoEan,quantidade);
+        return ResponseEntity.ok("Entrada realizada com sucesso.");
+    }
+    @PutMapping("/baixa/{codigoEan}")
+    public ResponseEntity<String> baixaProduto(@PathVariable String codigoEan, @RequestParam Integer quantidade){
+        produtoService.novaBaixa(codigoEan,quantidade);
+        return ResponseEntity.ok("Baixa realizada com sucesso.");
+    }
+
 }
