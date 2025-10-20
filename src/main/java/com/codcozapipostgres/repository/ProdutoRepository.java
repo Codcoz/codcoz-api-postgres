@@ -3,6 +3,7 @@ package com.codcozapipostgres.repository;
 import com.codcozapipostgres.model.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -34,6 +35,9 @@ public interface ProdutoRepository extends JpaRepository<Produto,Long> {
     @Query(value = "SELECT * FROM produto p WHERE p.empresa_id = (:id)",nativeQuery = true)
     List<Produto> listarEstoque(@Param("id") Integer idEmpresa);
 
-    @Query(value = "SELECT * FROM produto p WHERE p.codigo_ean = CAST(:id AS VARCHAR)",nativeQuery = true)
-    Produto buscarProdutoPorCodigoEan(@Param("id") Long codigoEan);
+    @Query(value = "SELECT * FROM produto p WHERE p.codigo_ean = :codigoEan", nativeQuery = true)
+    Produto buscarProdutoPorCodigoEan(@Param("codigoEan") String codigoEan);
+
+    @Procedure(procedureName = "public.sp_movimenta_produtos")
+    void movimentaProdutos(@Param("idProduto") String codigoEan, @Param("quantidade") Integer quantidade);
 }
