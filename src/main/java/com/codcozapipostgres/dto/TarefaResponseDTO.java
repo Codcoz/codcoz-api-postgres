@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class TarefaResponseDTO {
+
     private String empresa;
     private String tipoTarefa;
     private String ingrediente;
@@ -19,7 +20,10 @@ public class TarefaResponseDTO {
     private String responsavel;
     private String pedido;
     private String situacao;
+    private Double quantidadeEsperada;
+    private Double contagem;
     private LocalDate dataCriacao;
     private LocalDate dataLimite;
     private LocalDate dataConclusao;
 }
+

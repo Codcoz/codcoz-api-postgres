@@ -3,6 +3,7 @@ package com.codcozapipostgres.service;
 import com.codcozapipostgres.dto.TarefaRequestDTO;
 import com.codcozapipostgres.dto.TarefaResponseDTO;
 import com.codcozapipostgres.model.Tarefa;
+import com.codcozapipostgres.projection.TarefaProjection;
 import com.codcozapipostgres.repository.TarefaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -11,9 +12,8 @@ import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class TarefaService {
@@ -27,52 +27,43 @@ public class TarefaService {
     private Tarefa fromRequestDTO(TarefaRequestDTO tarefaRequestDTO) {
         return objectMapper.convertValue (tarefaRequestDTO, Tarefa.class);
     }
-    private TarefaResponseDTO toResponseDTO(Object[] r) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("empresa", r[0]);
-        map.put("tipoTarefa", r[1]);
-        map.put("ingrediente", r[2]);
-        map.put("relator", r[3]);
-        map.put("responsavel", r[4]);
-        map.put("pedido", r[5]);
-        map.put("situacao", r[6]);
-        map.put("dataCriacao", r[7]);
-        map.put("dataLimite", r[8]);
-        map.put("dataConclusao", r[9]);
-        return objectMapper.convertValue(map, TarefaResponseDTO.class);
+    private TarefaResponseDTO toResponseDTO(TarefaProjection projection) {
+        return new TarefaResponseDTO(
+                projection.getEmpresa(),
+                projection.getTipoTarefa(),
+                projection.getIngrediente(),
+                projection.getRelator(),
+                projection.getResponsavel(),
+                projection.getPedido(),
+                projection.getSituacao(),
+                projection.getQuantidadeEsperada(),
+                projection.getContagem(),
+                projection.getDataCriacao(),
+                projection.getDataLimite(),
+                projection.getDataConclusao()
+        );
     }
-
-    public List<TarefaResponseDTO> buscarTarefaPorData(LocalDate data, String email) {
-        List<Object[]> resultados = tarefaRepository.buscarPorData(data, email);
-
-        if (resultados.isEmpty()) {
-            throw new EntityNotFoundException("Nenhuma tarefa encontrada para esta data.");
-        }
-        return resultados.stream()
+    public List<TarefaResponseDTO> buscarPorData(LocalDate data, String email) {
+        List<TarefaProjection> tarefas = tarefaRepository.buscarPorData(data, email);
+        return tarefas.stream()
                 .map(this::toResponseDTO)
-                .toList();
+                .collect(Collectors.toList());
     }
 
-    public List<TarefaResponseDTO> buscarTarefaPorPeriodo(LocalDate dataInicio, LocalDate dataFim, String email) {
-        List<Object[]> resultados = tarefaRepository.buscarPorPeriodo(dataInicio, dataFim, email);
-
-        if (resultados.isEmpty()) {
-            throw new EntityNotFoundException("Nenhuma tarefa encontrada para esta data.");
-        }
-        return resultados.stream()
+    public List<TarefaResponseDTO> buscarPorPeriodo(LocalDate dataInicio, LocalDate dataFim, String email) {
+        List<TarefaProjection> tarefas = tarefaRepository.buscarPorPeriodo(dataInicio, dataFim, email);
+        return tarefas.stream()
                 .map(this::toResponseDTO)
-                .toList();
+                .collect(Collectors.toList());
     }
 
-    public List<TarefaResponseDTO> buscarTarefaPorTipo(LocalDate dataInicio, LocalDate dataFim, String email, String tipo) {
-        List<Object[]> resultados = tarefaRepository.buscarPorTipo(dataInicio, dataFim, email, tipo);
-        if (resultados.isEmpty()) {
-            throw new EntityNotFoundException("Nenhuma tarefa encontrada.");
-        }
-        return resultados.stream()
+    public List<TarefaResponseDTO> buscarPorPeriodoETipo(LocalDate dataInicio, LocalDate dataFim, String email, String tipo) {
+        List<TarefaProjection> tarefas = tarefaRepository.buscarPorPeriodoETipo(dataInicio, dataFim, email, tipo);
+        return tarefas.stream()
                 .map(this::toResponseDTO)
-                .toList();
+                .collect(Collectors.toList());
     }
+
 
     public void finalizarTarefa(Integer idTarefa) {
         try {
