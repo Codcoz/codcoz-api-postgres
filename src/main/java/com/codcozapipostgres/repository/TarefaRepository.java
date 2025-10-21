@@ -1,6 +1,5 @@
 package com.codcozapipostgres.repository;
 
-import com.codcozapipostgres.dto.TarefaResponseDTO;
 import com.codcozapipostgres.model.Tarefa;
 import com.codcozapipostgres.projection.TarefaProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,7 +28,6 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
                                                  @Param("dataFim") LocalDate dataFim,
                                                  @Param("email") String email,
                                                  @Param("tipo") String tipo);
-
 
     @Procedure(procedureName = "sp_conclui_tarefa")
     void finalizarTarefa(Integer idn);
