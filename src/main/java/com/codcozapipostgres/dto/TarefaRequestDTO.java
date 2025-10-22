@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class TarefaRequestDTO {
     @NotNull
     @Min(0)
-    private Long tarefaId;
+    private Long id;
     @NotNull
     @Min(0)
     private Long empresaId;

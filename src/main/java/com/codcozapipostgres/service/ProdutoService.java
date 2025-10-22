@@ -10,6 +10,7 @@ import jakarta.persistence.PersistenceException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,9 +33,9 @@ public class ProdutoService {
         return objectMapper.convertValue(produto, ProdutoResponseDTO.class);
     }
 
-    public Integer quantidadeProdutosEstoque(Integer idEmpresa) {
+    public Integer quantidadeEstoque(Integer idEmpresa) {
         try {
-            Integer quantidade = produtoRepository.contarProdutosEmEstoque(idEmpresa);
+            Integer quantidade = produtoRepository.contarEstoque(idEmpresa);
             if (quantidade == null) {
                 throw new EntityNotFoundException("Empresa não encontrada ou sem produtos cadastrados.");
             }
@@ -44,9 +45,9 @@ public class ProdutoService {
         }
     }
 
-    public Integer quantidadeProdutosEstoqueBaixo(Integer idEmpresa) {
+    public Integer quantidadeEstoqueBaixo(Integer idEmpresa) {
         try {
-            Integer quantidade = produtoRepository.contarProdutosBaixoEstoque(idEmpresa);
+            Integer quantidade = produtoRepository.contarBaixoEstoque(idEmpresa);
             if (quantidade == null) {
                 throw new EntityNotFoundException("Empresa não encontrada ou sem produtos cadastrados.");
             }
@@ -56,9 +57,9 @@ public class ProdutoService {
         }
     }
 
-    public Integer quantidadeProdutosProximosValidade(Integer idEmpresa) {
+    public Integer quantidadeProximosValidade(Integer idEmpresa) {
         try {
-            Integer quantidade = produtoRepository.contarProdutosProximosValidade(idEmpresa);
+            Integer quantidade = produtoRepository.contarProximosValidade(idEmpresa);
             if (quantidade == null) {
                 throw new EntityNotFoundException("Empresa não encontrada ou sem produtos cadastrados.");
             }
@@ -68,7 +69,7 @@ public class ProdutoService {
         }
     }
 
-    public List<ProdutoResponseDTO> listarProdutosEstoqueBaixo(Integer idEmpresa) {
+    public List<ProdutoResponseDTO> listarEstoqueBaixo(Integer idEmpresa) {
         List<Produto> produtos = produtoRepository.listarEstoqueBaixo(idEmpresa);
         if (produtos == null || produtos.isEmpty()) {
             throw new EntityNotFoundException("Nenhum produto com estoque baixo encontrado para esta empresa.");
@@ -76,7 +77,7 @@ public class ProdutoService {
         return produtos.stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
 
-    public List<ProdutoResponseDTO> listarProdutosProximosValidade(Integer idEmpresa) {
+    public List<ProdutoResponseDTO> listarProximosValidade(Integer idEmpresa) {
         List<Produto> produtos = produtoRepository.listarProximoValidade(idEmpresa);
         if (produtos == null || produtos.isEmpty()) {
             throw new EntityNotFoundException("Nenhum produto próximo da validade encontrado para esta empresa.");
@@ -84,7 +85,7 @@ public class ProdutoService {
         return produtos.stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
 
-    public List<ProdutoResponseDTO> listarProdutosEstoque(Integer idEmpresa) {
+    public List<ProdutoResponseDTO> listarEstoque(Integer idEmpresa) {
         List<Produto> produtos = produtoRepository.listarEstoque(idEmpresa);
         if (produtos == null || produtos.isEmpty()) {
             throw new EntityNotFoundException("Nenhum produto encontrado no estoque para esta empresa.");
@@ -92,8 +93,8 @@ public class ProdutoService {
         return produtos.stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
 
-    public ProdutoResponseDTO buscarProdutoPorCodigoEan(String codigoEan) {
-        Produto produto = produtoRepository.buscarProdutoPorCodigoEan(codigoEan);
+    public ProdutoResponseDTO buscarPorCodigoEan(String codigoEan) {
+        Produto produto = produtoRepository.buscarPorCodigoEan(codigoEan);
         if (produto == null) {
             throw new EntityNotFoundException("Produto com código EAN " + codigoEan + " não encontrado.");
         }

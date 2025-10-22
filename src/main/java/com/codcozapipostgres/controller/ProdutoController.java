@@ -1,15 +1,14 @@
 package com.codcozapipostgres.controller;
 
+import com.codcozapipostgres.dto.ProdutoRequestDTO;
 import com.codcozapipostgres.dto.ProdutoResponseDTO;
 import com.codcozapipostgres.service.ProdutoService;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @Tag(name = "Produtos", description = "Operações para gerenciar os produtos em estoque.")
@@ -23,35 +22,35 @@ public class ProdutoController {
 
     @GetMapping("/quantidade-estoque/{idEmpresa}")
     public ResponseEntity<Integer> quantidadeEstoque(@PathVariable Integer idEmpresa){
-        return ResponseEntity.ok(produtoService.quantidadeProdutosEstoque(idEmpresa));
+        return ResponseEntity.ok(produtoService.quantidadeEstoque(idEmpresa));
     }
     @GetMapping("/quantidade/estoque-baixo/{idEmpresa}")
     public ResponseEntity<Integer> quantidadeEstoqueBaixo(@PathVariable Integer idEmpresa){
-       return ResponseEntity.ok(produtoService.quantidadeProdutosEstoqueBaixo(idEmpresa));
+       return ResponseEntity.ok(produtoService.quantidadeEstoqueBaixo(idEmpresa));
     }
     @GetMapping("/quantidade/proximo-validade/{idEmpresa}")
     public ResponseEntity<Integer> quantidadeProximoValidade(@PathVariable Integer idEmpresa){
-        return ResponseEntity.ok(produtoService.quantidadeProdutosProximosValidade(idEmpresa));
+        return ResponseEntity.ok(produtoService.quantidadeProximosValidade(idEmpresa));
     }
 
     @GetMapping("/listar/estoque-baixo/{idEmpresa}")
     public ResponseEntity<List<ProdutoResponseDTO>> listarEstoqueBaixo(@PathVariable Integer idEmpresa){
-        return ResponseEntity.ok(produtoService.listarProdutosEstoqueBaixo(idEmpresa));
+        return ResponseEntity.ok(produtoService.listarEstoqueBaixo(idEmpresa));
     }
 
     @GetMapping("/listar/proximo-validade/{idEmpresa}")
     public ResponseEntity<List<ProdutoResponseDTO>> listarProximosValidade(@PathVariable Integer idEmpresa){
-        return ResponseEntity.ok(produtoService.listarProdutosProximosValidade(idEmpresa));
+        return ResponseEntity.ok(produtoService.listarProximosValidade(idEmpresa));
     }
 
     @GetMapping("/listar/estoque/{idEmpresa}")
     public ResponseEntity<List<ProdutoResponseDTO>> listarEstoque(@PathVariable Integer idEmpresa){
-        return ResponseEntity.ok(produtoService.listarProdutosEstoque(idEmpresa));
+        return ResponseEntity.ok(produtoService.listarEstoque(idEmpresa));
     }
 
     @GetMapping("/buscar/{codigoEan}")
     public ResponseEntity<ProdutoResponseDTO> buscarProdutoPorCodigoEan(@PathVariable String codigoEan) {
-        return ResponseEntity.ok(produtoService.buscarProdutoPorCodigoEan(codigoEan));
+        return ResponseEntity.ok(produtoService.buscarPorCodigoEan(codigoEan));
     }
 
     @PutMapping("/entrada/{codigoEan}")
@@ -64,5 +63,4 @@ public class ProdutoController {
         produtoService.novaBaixa(codigoEan,quantidade);
         return ResponseEntity.ok("Baixa realizada com sucesso.");
     }
-
 }

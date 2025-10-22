@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +30,7 @@ public class TarefaService {
     }
     private TarefaResponseDTO toResponseDTO(TarefaProjection projection) {
         return new TarefaResponseDTO(
+                projection.getId(),
                 projection.getEmpresa(),
                 projection.getTipoTarefa(),
                 projection.getIngrediente(),
@@ -70,7 +72,7 @@ public class TarefaService {
             tarefaRepository.finalizarTarefa(idTarefa);
         }
         catch (UncategorizedSQLException e) {
-            String mensagem = e.getSQLException().getMessage();
+            String mensagem = Objects.requireNonNull(e.getSQLException()).getMessage();
             if (mensagem.contains("não encontrado")) {
                 throw new EntityNotFoundException("Tarefa com ID " + idTarefa + " não encontrada.");
             }
