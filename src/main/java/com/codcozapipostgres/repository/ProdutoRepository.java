@@ -39,5 +39,5 @@ public interface ProdutoRepository extends JpaRepository<Produto,Long> {
     Produto buscarPorCodigoEan(@Param("codigoEan") String codigoEan);
 
     @Procedure(procedureName = "public.sp_movimenta_produtos")
-    void movimentaProdutos(@Param("idProduto") String codigoEan, @Param("quantidade") Integer quantidade);
+    void movimentaProdutos(@Param("codigo_eann") String codigoEan, @Param("quantidaden") Integer quantidade);
 }
