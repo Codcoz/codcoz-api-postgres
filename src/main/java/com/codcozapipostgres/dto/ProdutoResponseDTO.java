@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class ProdutoResponseDTO {
+    private Long id;
     private String codigoEan;
     private String nome;
     private String descricao;
