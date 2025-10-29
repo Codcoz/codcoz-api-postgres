@@ -40,7 +40,7 @@ public class FuncionarioService {
     public FuncionarioResponseDTO inserirFuncionario(FuncionarioRequestDTO funcionarioRequestDTO){
         Funcionario funcionario = fromRequestDTO(funcionarioRequestDTO);
         funcionario.setDataContratacao(LocalDate.now());
-        funcionario.setStatus("ATIVO");
+        funcionario.setStatus("Ativo");
         Funcionario estoquistaAdicionado =  funcionarioRepository.save(funcionario);
         return toResponseDTO(estoquistaAdicionado);
     }
@@ -80,7 +80,7 @@ public class FuncionarioService {
         if(funcionario == null){
             throw new EntityNotFoundException("Funcionário não registrado no banco.");
         }
-        funcionario.setStatus("INATIVO");
+        funcionario.setStatus("Inativo");
         funcionarioRepository.save(funcionario);
         return toResponseDTO(funcionario);
     }
