@@ -23,5 +23,5 @@ public class Empresa {
     private String sigla;
     private String email;
     private String status;
-    private String capacidadeEstoque;
+    private Integer capacidadeEstoque;
 }

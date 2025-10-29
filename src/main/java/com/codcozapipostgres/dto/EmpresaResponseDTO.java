@@ -16,5 +16,5 @@ public class EmpresaResponseDTO {
     private String sigla;
     private String email;
     private String status;
-    private String capacidadeEstoque;
+    private Integer capacidadeEstoque;
 }
