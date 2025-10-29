@@ -12,24 +12,25 @@ import org.springframework.stereotype.Service;
 public class EmpresaService {
     private final EmpresaRepository empresaRepository;
     private final ObjectMapper objectMapper;
+
     public EmpresaService(EmpresaRepository empresaRepository, ObjectMapper objectMapper) {
         this.empresaRepository = empresaRepository;
         this.objectMapper = objectMapper;
     }
 
-    public Empresa fromRequestDTO(EmpresaRequestDTO empresaRequestDTO){
+    public Empresa fromRequestDTO(EmpresaRequestDTO empresaRequestDTO) {
         return objectMapper.convertValue(empresaRequestDTO, Empresa.class);
     }
-    public EmpresaResponseDTO toResponseDTO(Empresa empresa){
+
+    public EmpresaResponseDTO toResponseDTO(Empresa empresa) {
         return objectMapper.convertValue(empresa, EmpresaResponseDTO.class);
     }
 
     @Transactional
-    public EmpresaResponseDTO criaEmpresa(EmpresaRequestDTO empresaRequestDTO){
+    public EmpresaResponseDTO criaEmpresa(EmpresaRequestDTO empresaRequestDTO) {
         Empresa empresa = fromRequestDTO(empresaRequestDTO);
         empresa.setStatus("Ativo");
         empresaRepository.save(empresa);
         return toResponseDTO(empresa);
     }
-
-
+}
