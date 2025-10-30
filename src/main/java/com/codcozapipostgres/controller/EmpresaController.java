@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
 
+@CrossOrigin(origins = "*")
 @RequestMapping("/empresa")
 @RestController
 @Tag(name = "Empresa", description = "Operações para gerenciar informações da empresa.")
