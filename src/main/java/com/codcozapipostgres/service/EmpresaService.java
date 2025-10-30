@@ -5,6 +5,7 @@ import com.codcozapipostgres.dto.EmpresaResponseDTO;
 import com.codcozapipostgres.model.Empresa;
 import com.codcozapipostgres.repository.EmpresaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +33,16 @@ public class EmpresaService {
         empresa.setStatus("Ativo");
         empresaRepository.save(empresa);
         return toResponseDTO(empresa);
+    }
+    public EmpresaResponseDTO buscarEmpresaPorCnpj(String cnpj) {
+        Empresa empresa = empresaRepository.findByCnpj(cnpj)
+                .orElseThrow(() -> new EntityNotFoundException("Empresa com CNPJ " + cnpj + " não encontrada."));
+        return toResponseDTO(empresa);
+    }
+    @Transactional
+    public void deletarEmpresaPorCnpj(String cnpj) {
+        Empresa empresa = empresaRepository.findByCnpj(cnpj)
+                .orElseThrow(() -> new EntityNotFoundException("Empresa com CNPJ " + cnpj + " não encontrada para deleção."));
+        empresaRepository.delete(empresa);
     }
 }
