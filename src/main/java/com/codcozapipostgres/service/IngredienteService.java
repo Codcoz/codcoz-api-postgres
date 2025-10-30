@@ -56,7 +56,7 @@ public class IngredienteService {
             throw new EntityNotFoundException("Nenhum ingrediente foi encontrado");
         }
     }
-    public List<IngredienteResponseDTO> listarTodos() {
+    public List<IngredienteResponseDTO> listar() {
         List<Ingrediente> ingredientes = ingredienteRepository.findAll();
         return ingredientes.stream()
                 .map(this::toResponseDto)

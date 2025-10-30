@@ -51,7 +51,7 @@ public class IngredienteController {
     })
     @GetMapping("/listar")
     public ResponseEntity<List<IngredienteResponseDTO>> listarTodos() {
-        List<IngredienteResponseDTO> ingredientes = ingredienteService.listarTodos();
+        List<IngredienteResponseDTO> ingredientes = ingredienteService.listar();
         return ResponseEntity.ok(ingredientes);
     }
 
