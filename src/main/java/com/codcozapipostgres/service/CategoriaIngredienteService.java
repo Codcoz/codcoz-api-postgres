@@ -39,21 +39,21 @@ public class CategoriaIngredienteService {
     }
 
     @Transactional
-    public CategoriaIngredienteResponseDTO atualizarCategoriaIngrediente(CategoriaIngredienteRequestDTO dto) {
-        CategoriaIngrediente categoria = fromRequestDto(dto);
-        if (categoria.getId() != null && categoriaIngredienteRepository.existsById(categoria.getId())) {
-            if (categoria.getNome() != null) {
-                categoria.setNome(categoria.getNome());
-            }
-            if (categoria.getDescricao() != null) {
-                categoria.setDescricao(categoria.getDescricao());
-            }
-            categoriaIngredienteRepository.save(categoria);
-            return toResponseDto(categoria);
-        } else {
-            throw new EntityNotFoundException("Nenhuma categoria de ingrediente foi encontrada");
+    public CategoriaIngredienteResponseDTO atualizarCategoriaIngrediente(Long id, CategoriaIngredienteRequestDTO dto) {
+        CategoriaIngrediente categoriaExistente = categoriaIngredienteRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhuma categoria de ingrediente foi encontrada com o ID " + id));
+
+        if (dto.getNome() != null) {
+            categoriaExistente.setNome(dto.getNome());
         }
+        if (dto.getDescricao() != null) {
+            categoriaExistente.setDescricao(dto.getDescricao());
+        }
+
+        CategoriaIngrediente categoriaAtualizada = categoriaIngredienteRepository.save(categoriaExistente);
+        return toResponseDto(categoriaAtualizada);
     }
+
 
     @Transactional
     public void deletarCategoriaIngrediente(Long id) {
