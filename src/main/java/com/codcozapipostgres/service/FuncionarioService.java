@@ -49,7 +49,7 @@ public class FuncionarioService {
     public FuncionarioResponseDTO atualizarFuncionario(Long id, FuncionarioRequestDTO funcionarioRequestDTO){
         Funcionario funcionario = funcionarioRepository.buscarPorId(id);
         if(funcionario == null){
-            throw new EntityNotFoundException("Funcionário não registrado no banco.");
+            throw new EntityNotFoundException("Funcionário não encontrado");
         }
         if(funcionarioRequestDTO != null){
             if (funcionarioRequestDTO.getEmpresaId() != null){
@@ -78,7 +78,7 @@ public class FuncionarioService {
     public FuncionarioResponseDTO desligarFuncionario(Long id){
         Funcionario funcionario = funcionarioRepository.buscarPorId(id);
         if(funcionario == null){
-            throw new EntityNotFoundException("Funcionário não registrado no banco.");
+            throw new EntityNotFoundException("Funcionário não encontrado");
         }
         funcionario.setStatus("Inativo");
         funcionarioRepository.save(funcionario);

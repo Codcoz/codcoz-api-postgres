@@ -74,7 +74,7 @@ public class TarefaService {
         catch (UncategorizedSQLException e) {
             String mensagem = Objects.requireNonNull(e.getSQLException()).getMessage();
             if (mensagem.contains("não encontrado")) {
-                throw new EntityNotFoundException("Tarefa com ID " + idTarefa + " não encontrada.");
+                throw new EntityNotFoundException("Tarefa não encontrada");
             }
             throw new RuntimeException("Erro ao executar procedure: " + mensagem, e);
         }

@@ -45,7 +45,7 @@ public class IngredienteService {
             ingredienteRepository.save(ingrediente);
             return toResponseDto(ingrediente);
         }else {
-            throw new EntityNotFoundException("Nenhum ingrediente foi encontrado");
+            throw new EntityNotFoundException("Ingrediente não encontrado");
         }
     }
     @Transactional
@@ -53,7 +53,7 @@ public class IngredienteService {
         if (ingredienteRepository.existsById(id)) {
             ingredienteRepository.deleteById(id);
         } else {
-            throw new EntityNotFoundException("Nenhum ingrediente foi encontrado");
+            throw new EntityNotFoundException("Ingrediente não encontrado");
         }
     }
     public List<IngredienteResponseDTO> listar() {
@@ -65,7 +65,7 @@ public class IngredienteService {
 
     public IngredienteResponseDTO buscarPorId(Long id) {
         Ingrediente ingrediente = ingredienteRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Nenhum ingrediente foi encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Ingrediente não encontrado"));
         return toResponseDto(ingrediente);
     }
 

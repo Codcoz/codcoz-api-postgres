@@ -6,7 +6,6 @@ import com.codcozapipostgres.model.Movimentacao;
 import com.codcozapipostgres.repository.MovimentacaoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +21,6 @@ public class MovimentacaoService {
         this.movimentacaoRepository = movimentacaoRepository;
         this.objectMapper = objectMapper;
     }
-    public Movimentacao fromRequestDTO(MovimentacaoRequestDTO movimentacaoRequestDTO){
-        return objectMapper.convertValue(movimentacaoRequestDTO, Movimentacao.class);
-    }
     public MovimentacaoResponseDTO toResponseDTO(Movimentacao movimentacao){
         return objectMapper.convertValue(movimentacao, MovimentacaoResponseDTO.class);
     }
@@ -37,7 +33,7 @@ public class MovimentacaoService {
 
     public MovimentacaoResponseDTO buscarPorId(Long id) {
         Movimentacao movimentacao = movimentacaoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Movimentação não encontrada com ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Movimentação não encontrada"));
         return toResponseDTO(movimentacao);
     }
 

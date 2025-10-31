@@ -60,7 +60,7 @@ public class ProdutoService {
         try {
             Integer quantidade = produtoRepository.contarProximosValidade(idEmpresa);
             if (quantidade == null) {
-                throw new EntityNotFoundException("Empresa não encontrada ou sem produtos cadastrados.");
+                throw new EntityNotFoundException("Empresa não encontrada ou sem produtos cadstrados.");
             }
             return quantidade;
         } catch (DataAccessException e) {
@@ -71,7 +71,7 @@ public class ProdutoService {
     public List<ProdutoResponseDTO> listarEstoqueBaixo(Integer idEmpresa) {
         List<Produto> produtos = produtoRepository.listarEstoqueBaixo(idEmpresa);
         if (produtos == null || produtos.isEmpty()) {
-            throw new EntityNotFoundException("Nenhum produto com estoque baixo encontrado para esta empresa.");
+            throw new EntityNotFoundException("Nenhum produto com estoque baixo.");
         }
         return produtos.stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
@@ -79,7 +79,7 @@ public class ProdutoService {
     public List<ProdutoResponseDTO> listarProximosValidade(Integer idEmpresa) {
         List<Produto> produtos = produtoRepository.listarProximoValidade(idEmpresa);
         if (produtos == null || produtos.isEmpty()) {
-            throw new EntityNotFoundException("Nenhum produto próximo da validade encontrado para esta empresa.");
+            throw new EntityNotFoundException("Nenhum produto próximo à validade.");
         }
         return produtos.stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
@@ -87,7 +87,7 @@ public class ProdutoService {
     public List<ProdutoResponseDTO> listarEstoque(Integer idEmpresa) {
         List<Produto> produtos = produtoRepository.listarEstoque(idEmpresa);
         if (produtos == null || produtos.isEmpty()) {
-            throw new EntityNotFoundException("Nenhum produto encontrado no estoque para esta empresa.");
+            throw new EntityNotFoundException("Produto não encontrado.");
         }
         return produtos.stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
@@ -95,7 +95,7 @@ public class ProdutoService {
     public ProdutoResponseDTO buscarPorCodigoEan(String codigoEan) {
         Produto produto = produtoRepository.buscarPorCodigoEan(codigoEan);
         if (produto == null) {
-            throw new EntityNotFoundException("Produto com código EAN " + codigoEan + " não encontrado.");
+            throw new EntityNotFoundException("Produto não encontrado.");
         }
         return toResponseDTO(produto);
     }
@@ -104,7 +104,7 @@ public class ProdutoService {
         try {
             produtoRepository.movimentaProdutos(codigoEan, quantidade);
         } catch (DataAccessException e) {
-            throw new PersistenceException("Erro ao registrar nova entrada de produto com código EAN " + codigoEan, e);
+            throw new PersistenceException("Erro ao registrar nova entrada de produto", e);
         }
     }
 
@@ -113,7 +113,7 @@ public class ProdutoService {
             Integer quantNegativa = -Math.abs(quantidade);
             produtoRepository.movimentaProdutos(codigoEan, quantNegativa);
         } catch (DataAccessException e) {
-            throw new PersistenceException("Erro ao registrar baixa de produto com código EAN " + codigoEan, e);
+            throw new PersistenceException("Erro ao registrar baixa de produto", e);
         }
     }
 }

@@ -41,7 +41,7 @@ public class CategoriaIngredienteService {
     @Transactional
     public CategoriaIngredienteResponseDTO atualizarCategoriaIngrediente(Long id, CategoriaIngredienteRequestDTO dto) {
         CategoriaIngrediente categoriaExistente = categoriaIngredienteRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Nenhuma categoria de ingrediente foi encontrada com o ID " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
 
         if (dto.getNome() != null) {
             categoriaExistente.setNome(dto.getNome());
@@ -60,7 +60,7 @@ public class CategoriaIngredienteService {
         if (categoriaIngredienteRepository.existsById(id)) {
             categoriaIngredienteRepository.deleteById(id);
         } else {
-            throw new EntityNotFoundException("Categoria de ingrediente com ID " + id + " não foi encontrada");
+            throw new EntityNotFoundException("Categoria não encontrada");
         }
     }
 
@@ -73,7 +73,7 @@ public class CategoriaIngredienteService {
 
     public CategoriaIngredienteResponseDTO buscarPorId(Long id) {
         CategoriaIngrediente categoria = categoriaIngredienteRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Categoria de ingrediente com ID " + id + " não foi encontrada"));
+                .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
         return toResponseDto(categoria);
     }
 }
