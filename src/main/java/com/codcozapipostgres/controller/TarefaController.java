@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Tag(name = "Tarefa", description = "Operações para gerenciar as tarefas dos estoquistas.")
+@CrossOrigin(origins = "*")
+@Tag(name = "Tarefa", description = "Operações para gerenciar as tarefas a serem realizadas pelos estoquistas.")
 @RestController
 @RequestMapping("/tarefa")
 public class TarefaController {

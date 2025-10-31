@@ -13,7 +13,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Funcionario", description = "Operações para gerenciar os funcionários da empresa.")
+
+@CrossOrigin(origins = "*")
+@Tag(name="Funcionario",description = "Operações para gerenciar os funcionários da empresa.")
 @RestController
 @RequestMapping("/funcionario")
 public class FuncionarioController {

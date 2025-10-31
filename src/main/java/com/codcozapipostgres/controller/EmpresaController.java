@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/empresa")
 @Tag(name = "Empresa", description = "Endpoints para gerenciamento de empresas.")
