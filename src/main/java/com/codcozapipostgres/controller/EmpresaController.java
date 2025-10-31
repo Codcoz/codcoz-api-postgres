@@ -158,4 +158,54 @@ public class EmpresaController {
         Map<String, String> response = Map.of("mensagem", "Empresa com CNPJ " + cnpj + " deletada com sucesso.");
         return ResponseEntity.ok(response);
     }
+
+    @Operation(summary = "Calcula a ocupação do estoque da empresa",
+            description = "Retorna a porcentagem de ocupação do estoque da empresa com base no ID informado.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Porcentagem de ocupação calculada com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            examples = @ExampleObject(
+                                    name = "Cálculo realizado",
+                                    value = """
+                                            {
+                                              "ocupacaoEstoque": 75.32
+                                            }
+                                            """
+                            ))),
+            @ApiResponse(responseCode = "404", description = "Empresa não encontrada ou sem produtos em estoque",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Empresa não encontrada",
+                                    value = """
+                                            {
+                                              "erro": "Objeto não encontrado.",
+                                              "descricao": "Empresa não registrada no banco ou não possui produtos em estoque.",
+                                              "status": 404
+                                            }
+                                            """
+                            ))),
+            @ApiResponse(responseCode = "500", description = "Erro interno ao calcular ocupação do estoque",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Erro interno",
+                                    value = """
+                                            {
+                                              "erro": "Erro interno no servidor.",
+                                              "descricao": "Erro inesperado ao tentar calcular a ocupação do estoque.",
+                                              "status": 500
+                                            }
+                                            """
+                            )))
+    })
+    @GetMapping("/ocupacao-estoque/{idEmpresa}")
+    public ResponseEntity<Map<String, Double>> calcularOcupacaoEstoque(
+            @Parameter(name = "idEmpresa", description = "ID da empresa cadastrada no sistema", example = "1")
+            @PathVariable Integer idEmpresa) {
+
+        Double ocupacao = empresaService.calculaOcupacaoEstoque(idEmpresa);
+        return ResponseEntity.ok(Map.of("ocupacaoEstoque", ocupacao));
+    }
+
 }

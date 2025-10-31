@@ -45,4 +45,11 @@ public class EmpresaService {
                 .orElseThrow(() -> new EntityNotFoundException("Empresa com CNPJ " + cnpj + " não encontrada para deleção."));
         empresaRepository.delete(empresa);
     }
+    public Double calculaOcupacaoEstoque(Integer idEmpresa){
+        try {
+            return (double) Math.round(empresaRepository.calculaPorcentagemOcupacao(idEmpresa)*100)/100;
+        }catch (NullPointerException e){
+            throw new EntityNotFoundException("Empresa não registrada no banco.");
+        }
+    }
 }
