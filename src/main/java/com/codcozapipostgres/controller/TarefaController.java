@@ -232,7 +232,7 @@ public class TarefaController {
     })
     @GetMapping("/buscar-concluidas/{empresaId}")
     public ResponseEntity<List<TarefaResponseDTO>> buscarTarefasConcluidas(@RequestParam Integer dias, @PathVariable Long empresaId) {
-        List<TarefaResponseDTO> tarefas = tarefaService.buscarConcluidas(dias, empresaId);
+        List<TarefaResponseDTO> tarefas = tarefaService.buscaConcluidas(dias, empresaId);
         return ResponseEntity.ok(tarefas);
     }
 

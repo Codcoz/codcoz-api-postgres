@@ -69,7 +69,7 @@ public class TarefaService {
                 .collect(Collectors.toList());
     }
 
-    public List<TarefaResponseDTO> buscarConcluidas(Integer dias,Long empresaId){
+    public List<TarefaResponseDTO> buscaConcluidas(Integer dias, Long empresaId){
         try{
             LocalDate dataLimite = LocalDate.now().minusDays(dias);
             List<Tarefa> tarefas = tarefaRepository.buscaTarefaPorConclusao(dataLimite, empresaId);
@@ -81,6 +81,16 @@ public class TarefaService {
         }
     }
 
+    public List<TarefaResponseDTO> listaTarefas(Long empresaId){
+        try{
+            List<Tarefa> tarefas = tarefaRepository.listaTarefas(empresaId);
+            return tarefas.stream()
+                    .map(this::toResponseDTO)
+                    .collect(Collectors.toList());
+        }catch(EntityNotFoundException e){
+            throw new EntityNotFoundException("Nenhuma tarefa encontrada.");
+        }
+    }
     public void finalizaTarefa(Integer idTarefa) {
         try {
             tarefaRepository.finalizaTarefa(idTarefa);
