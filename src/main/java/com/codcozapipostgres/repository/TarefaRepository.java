@@ -28,6 +28,8 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
                                                 @Param("email") String email,
                                                 @Param("tipo") String tipo);
 
+    @Query(value = "SELECT * FROM ",nativeQuery = true)
+    List<TarefaProjection> buscaTarefaPorConclusao(@Param("dias") Integer dias);
     @Procedure(procedureName = "sp_conclui_tarefa")
     void finalizaTarefa(Integer idn);
 }

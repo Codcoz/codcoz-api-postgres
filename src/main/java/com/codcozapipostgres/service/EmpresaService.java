@@ -35,15 +35,21 @@ public class EmpresaService {
         return toResponseDTO(empresa);
     }
     public EmpresaResponseDTO buscaEmpresaPorCnpj(String cnpj) {
-        Empresa empresa = empresaRepository.buscaEmpresaPorCnpj(cnpj)
-                .orElseThrow(() -> new EntityNotFoundException("Empresa não encontrada"));
-        return toResponseDTO(empresa);
+        try{
+            Empresa empresa = empresaRepository.buscaEmpresaPorCnpj(cnpj);
+            return toResponseDTO(empresa);
+        }catch (EntityNotFoundException e){
+            throw new EntityNotFoundException("Empresa não encontrada.");
+        }
     }
     @Transactional
     public void deletaEmpresaPorCnpj(String cnpj) {
-        Empresa empresa = empresaRepository.buscaEmpresaPorCnpj(cnpj)
-                .orElseThrow(() -> new EntityNotFoundException("Empresa não encontrada"));
-        empresaRepository.delete(empresa);
+        try{
+            Empresa empresa = empresaRepository.buscaEmpresaPorCnpj(cnpj);
+            empresaRepository.delete(empresa);
+        }catch (EntityNotFoundException e){
+            throw new EntityNotFoundException("Empresa não encontrada.");
+        }
     }
     public Double calculaOcupacaoEstoque(Integer idEmpresa){
         try {
