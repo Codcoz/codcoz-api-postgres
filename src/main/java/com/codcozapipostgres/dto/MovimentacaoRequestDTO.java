@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Setter
 public class MovimentacaoRequestDTO {
     private Integer produtoId;
+    private Integer empresaId;
     private Integer tipoMovimentacaoId;
     private LocalDateTime data;
     private Integer quantidadeInicial;
