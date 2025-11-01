@@ -333,5 +333,99 @@ public class TarefaController {
         TarefaResponseDTO tarefaCriada = tarefaService.criaTarefa(tarefaRequestDTO);
         return ResponseEntity.status(201).body(tarefaCriada);
     }
+    @Operation(
+            summary = "Deleta uma tarefa pelo ID",
+            description = "Remove uma tarefa existente do sistema com base no ID informado."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Tarefa deletada com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(example = "\"Tarefa deletada com sucesso.\""))),
+            @ApiResponse(responseCode = "404", description = "Tarefa não encontrada para o ID informado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Tarefa não encontrada",
+                                    value = """
+                                        {
+                                          "erro": "Objeto não encontrado.",
+                                          "descricao": "Tarefa com o ID informado não foi encontrada.",
+                                          "status": 404
+                                        }
+                                        """
+                            ))),
+            @ApiResponse(responseCode = "500", description = "Erro interno ao deletar tarefa",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Erro interno",
+                                    value = """
+                                        {
+                                          "erro": "Erro interno no servidor.",
+                                          "descricao": "Erro inesperado ao deletar a tarefa no banco de dados.",
+                                          "status": 500
+                                        }
+                                        """
+                            )))
+    })
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<String> deletaTarefa(@PathVariable Long id) {
+        tarefaService.deletaTarefa(id);
+        return ResponseEntity.ok("Tarefa deletada com sucesso.");
+    }
+
+    @Operation(
+            summary = "Busca tarefa por ID",
+            description = "Retorna os dados de uma tarefa específica com base no ID informado."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Tarefa encontrada com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TarefaResponseDTO.class),
+                            examples = @ExampleObject(
+                                    name = "Tarefa encontrada",
+                                    value = """
+                                        {
+                                          "id": 101,
+                                          "descricao": "Conferir estoque de produtos",
+                                          "tipo": "Conferência",
+                                          "responsavel": "maria.souza@empresa.com",
+                                          "dataPrevista": "2025-11-01",
+                                          "status": "PENDENTE"
+                                        }
+                                        """
+                            ))),
+            @ApiResponse(responseCode = "404", description = "Tarefa não encontrada para o ID informado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Tarefa não encontrada",
+                                    value = """
+                                        {
+                                          "erro": "Objeto não encontrado.",
+                                          "descricao": "Tarefa com o ID informado não foi encontrada.",
+                                          "status": 404
+                                        }
+                                        """
+                            ))),
+            @ApiResponse(responseCode = "500", description = "Erro interno ao buscar tarefa",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Erro interno",
+                                    value = """
+                                        {
+                                          "erro": "Erro interno no servidor.",
+                                          "descricao": "Erro inesperado ao buscar a tarefa no banco de dados.",
+                                          "status": 500
+                                        }
+                                        """
+                            )))
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<TarefaResponseDTO> buscaTarefaPorId(@PathVariable Long id) {
+        TarefaResponseDTO tarefa = tarefaService.buscaPorId(id);
+        return ResponseEntity.ok(tarefa);
+    }
 
 }

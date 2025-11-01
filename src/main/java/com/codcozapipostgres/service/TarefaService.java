@@ -49,6 +49,11 @@ public class TarefaService {
                 projection.getDataConclusao()
         );
     }
+    public TarefaResponseDTO buscaPorId(Long idTarefa) {
+        Tarefa tarefa =  tarefaRepository.findById(idTarefa)
+                .orElseThrow(EntityNotFoundException::new);
+        return toResponseDTO(tarefa);
+    }
     public List<TarefaResponseDTO> buscaPorData(LocalDate data, String email) {
         List<TarefaProjection> tarefas = tarefaRepository.buscaPorData(data, email);
         return tarefas.stream()
@@ -115,5 +120,14 @@ public class TarefaService {
         Tarefa tarefa = fromRequestDTO(tarefaRequestDTO);
         tarefaRepository.save(tarefa);
         return toResponseDTO(tarefa);
+    }
+
+    @Transactional
+    public void deletaTarefa(Long idTarefa) {
+        if (tarefaRepository.existsById(idTarefa)){
+            tarefaRepository.deleteById(idTarefa);
+        }else {
+            throw new EntityNotFoundException("Tarefa não encontrada");
+        }
     }
 }
