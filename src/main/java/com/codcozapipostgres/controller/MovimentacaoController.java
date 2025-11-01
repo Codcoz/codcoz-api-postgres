@@ -48,7 +48,7 @@ public class MovimentacaoController {
 
     @Operation(summary = "Lista entradas por empresa",
             description = "Retorna todas as movimentações do tipo entrada de uma empresa específica.")
-    @GetMapping("/entradas/empresa/{idEmpresa}")
+    @GetMapping("/entradas/{idEmpresa}")
     public ResponseEntity<List<MovimentacaoResponseDTO>> listarEntradasPorEmpresa(
             @Parameter(description = "ID da empresa", example = "1") @PathVariable Long idEmpresa) {
         return ResponseEntity.ok(movimentacaoService.listaEntradas(idEmpresa));
@@ -56,7 +56,7 @@ public class MovimentacaoController {
 
     @Operation(summary = "Lista baixas por empresa",
             description = "Retorna todas as movimentações do tipo baixa de uma empresa específica.")
-    @GetMapping("/baixas/empresa/{idEmpresa}")
+    @GetMapping("/baixas/{idEmpresa}")
     public ResponseEntity<List<MovimentacaoResponseDTO>> listarBaixasPorEmpresa(
             @Parameter(description = "ID da empresa", example = "1") @PathVariable Long idEmpresa) {
         return ResponseEntity.ok(movimentacaoService.listaBaixas(idEmpresa));
@@ -64,7 +64,7 @@ public class MovimentacaoController {
 
     @Operation(summary = "Lista entradas por empresa em período",
             description = "Retorna todas as entradas de uma empresa dentro de um período de datas específico.")
-    @GetMapping("/entradas/empresa/{idEmpresa}/periodo")
+    @GetMapping("/entradas/{idEmpresa}/periodo")
     public ResponseEntity<List<MovimentacaoResponseDTO>> listarEntradasPorEmpresaPorPeriodo(
             @Parameter(description = "ID da empresa", example = "1") @PathVariable Long idEmpresa,
             @Parameter(description = "Data inicial (YYYY-MM-DD)", example = "2025-01-01") @RequestParam String dataInicio,
@@ -74,7 +74,7 @@ public class MovimentacaoController {
 
     @Operation(summary = "Lista baixas por empresa em período",
             description = "Retorna todas as baixas de uma empresa dentro de um período de datas específico.")
-    @GetMapping("/baixas/empresa/{idEmpresa}/periodo")
+    @GetMapping("/baixas/{idEmpresa}/periodo")
     public ResponseEntity<List<MovimentacaoResponseDTO>> listarBaixasPorEmpresaPorPeriodo(
             @Parameter(description = "ID da empresa", example = "1") @PathVariable Long idEmpresa,
             @Parameter(description = "Data inicial (YYYY-MM-DD)", example = "2025-01-01") @RequestParam String dataInicio,
