@@ -91,6 +91,7 @@ public class TarefaService {
             throw new EntityNotFoundException("Nenhuma tarefa encontrada.");
         }
     }
+
     public void finalizaTarefa(Integer idTarefa) {
         try {
             tarefaRepository.finalizaTarefa(idTarefa);

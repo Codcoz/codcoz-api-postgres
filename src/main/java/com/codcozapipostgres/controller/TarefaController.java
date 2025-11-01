@@ -235,5 +235,47 @@ public class TarefaController {
         List<TarefaResponseDTO> tarefas = tarefaService.buscaConcluidas(dias, empresaId);
         return ResponseEntity.ok(tarefas);
     }
-
+    @Operation(
+            summary = "Lista todas as tarefas de uma empresa",
+            description = "Retorna todas as tarefas registradas no sistema para a empresa informada.",
+            parameters = {
+                    @Parameter(name = "empresaId", description = "Identificador da empresa", example = "3")
+            }
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Tarefas encontradas com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TarefaResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Nenhuma tarefa encontrada para a empresa informada",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Nenhuma tarefa encontrada",
+                                    value = """
+                                        {
+                                          "erro": "Objeto não encontrado.",
+                                          "descricao": "Nenhuma tarefa encontrada para a empresa informada.",
+                                          "status": 404
+                                        }
+                                        """
+                            ))),
+            @ApiResponse(responseCode = "500", description = "Erro interno ao buscar tarefas",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Erro interno",
+                                    value = """
+                                        {
+                                          "erro": "Erro interno no servidor.",
+                                          "descricao": "Erro inesperado ao buscar tarefas no banco de dados.",
+                                          "status": 500
+                                        }
+                                        """
+                            )))
+    })
+    @GetMapping("/listar/{empresaId}")
+    public ResponseEntity<List<TarefaResponseDTO>> listaTarefas(@PathVariable Long empresaId) {
+        List<TarefaResponseDTO> tarefas = tarefaService.listaTarefas(empresaId);
+        return ResponseEntity.ok(tarefas);
+    }
 }

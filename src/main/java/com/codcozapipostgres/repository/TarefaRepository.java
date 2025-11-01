@@ -33,6 +33,7 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 
     @Query(value = "SELECT * FROM tarefa WHERE empresa_id = :empresaId", nativeQuery = true)
     List<Tarefa> listaTarefas(@Param("empresaId")  Long empresaId);
+
     @Procedure(procedureName = "sp_conclui_tarefa")
     void finalizaTarefa(Integer idn);
 }
