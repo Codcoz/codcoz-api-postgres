@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
-    Optional<Empresa> findByCnpj(String cnpj);
+    Optional<Empresa> buscaEmpresaPorCnpj(String cnpj);
 
     @Query(value = "SELECT * FROM func_calcula_ocupacao_estoque(:id_empresa)",nativeQuery = true)
     Double calculaPorcentagemOcupacao(@Param("id_empresa")  Integer idEmpresa);

@@ -45,36 +45,36 @@ public class TarefaService {
                 projection.getDataConclusao()
         );
     }
-    public List<TarefaResponseDTO> buscarPorData(LocalDate data, String email) {
-        List<TarefaProjection> tarefas = tarefaRepository.buscarPorData(data, email);
+    public List<TarefaResponseDTO> buscaPorData(LocalDate data, String email) {
+        List<TarefaProjection> tarefas = tarefaRepository.buscaPorData(data, email);
         return tarefas.stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<TarefaResponseDTO> buscarPorPeriodo(LocalDate dataInicio, LocalDate dataFim, String email) {
-        List<TarefaProjection> tarefas = tarefaRepository.buscarPorPeriodo(dataInicio, dataFim, email);
+    public List<TarefaResponseDTO> buscaPorPeriodo(LocalDate dataInicio, LocalDate dataFim, String email) {
+        List<TarefaProjection> tarefas = tarefaRepository.buscaPorPeriodo(dataInicio, dataFim, email);
         return tarefas.stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<TarefaResponseDTO> buscarPorPeriodoETipo(LocalDate dataInicio, LocalDate dataFim, String email, String tipo) {
-        List<TarefaProjection> tarefas = tarefaRepository.buscarPorPeriodoETipo(dataInicio, dataFim, email, tipo);
+    public List<TarefaResponseDTO> buscaPorPeriodoETipo(LocalDate dataInicio, LocalDate dataFim, String email, String tipo) {
+        List<TarefaProjection> tarefas = tarefaRepository.buscaPorPeriodoETipo(dataInicio, dataFim, email, tipo);
         return tarefas.stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
 
-    public void finalizarTarefa(Integer idTarefa) {
+    public void finalizaTarefa(Integer idTarefa) {
         try {
-            tarefaRepository.finalizarTarefa(idTarefa);
+            tarefaRepository.finalizaTarefa(idTarefa);
         }
         catch (UncategorizedSQLException e) {
             String mensagem = Objects.requireNonNull(e.getSQLException()).getMessage();
             if (mensagem.contains("não encontrado")) {
-                throw new EntityNotFoundException("Tarefa com ID " + idTarefa + " não encontrada.");
+                throw new EntityNotFoundException("Tarefa não encontrada");
             }
             throw new RuntimeException("Erro ao executar procedure: " + mensagem, e);
         }

@@ -37,7 +37,7 @@ public class IngredienteController {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/listar")
     public ResponseEntity<List<IngredienteResponseDTO>> listarTodos() {
-        return ResponseEntity.ok(ingredienteService.listar());
+        return ResponseEntity.ok(ingredienteService.listaIngredientes());
     }
 
     @Operation(
@@ -53,7 +53,7 @@ public class IngredienteController {
     @GetMapping("/buscar/{id}")
     public ResponseEntity<IngredienteResponseDTO> buscarPorId(
             @Parameter(description = "ID do ingrediente", example = "1") @PathVariable Long id) {
-        return ResponseEntity.ok(ingredienteService.buscarPorId(id));
+        return ResponseEntity.ok(ingredienteService.buscaIngrediente(id));
     }
 
     @Operation(
@@ -69,7 +69,7 @@ public class IngredienteController {
     @PostMapping("/inserir")
     public ResponseEntity<IngredienteResponseDTO> criarIngrediente(
             @RequestBody IngredienteRequestDTO ingredienteRequestDTO) {
-        return ResponseEntity.ok(ingredienteService.criarIngrediente(ingredienteRequestDTO));
+        return ResponseEntity.ok(ingredienteService.criaIngrediente(ingredienteRequestDTO));
     }
 
     @Operation(
@@ -85,7 +85,7 @@ public class IngredienteController {
     @PutMapping("/atualizar")
     public ResponseEntity<IngredienteResponseDTO> atualizarIngrediente(
             @RequestBody IngredienteRequestDTO ingredienteRequestDTO) {
-        return ResponseEntity.ok(ingredienteService.atualizarIngrediente(ingredienteRequestDTO));
+        return ResponseEntity.ok(ingredienteService.atualizaIngrediente(ingredienteRequestDTO));
     }
 
     @Operation(
@@ -100,7 +100,7 @@ public class IngredienteController {
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletarIngrediente(
             @Parameter(description = "ID do ingrediente", example = "1") @PathVariable Long id) {
-        ingredienteService.deletarIngrediente(id);
+        ingredienteService.deletaIngrediente(id);
         return ResponseEntity.ok().build();
     }
 }

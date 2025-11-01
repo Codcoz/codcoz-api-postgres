@@ -34,22 +34,22 @@ public class EmpresaService {
         empresaRepository.save(empresa);
         return toResponseDTO(empresa);
     }
-    public EmpresaResponseDTO buscarEmpresaPorCnpj(String cnpj) {
-        Empresa empresa = empresaRepository.findByCnpj(cnpj)
-                .orElseThrow(() -> new EntityNotFoundException("Empresa com CNPJ " + cnpj + " não encontrada."));
+    public EmpresaResponseDTO buscaEmpresaPorCnpj(String cnpj) {
+        Empresa empresa = empresaRepository.buscaEmpresaPorCnpj(cnpj)
+                .orElseThrow(() -> new EntityNotFoundException("Empresa não encontrada"));
         return toResponseDTO(empresa);
     }
     @Transactional
-    public void deletarEmpresaPorCnpj(String cnpj) {
-        Empresa empresa = empresaRepository.findByCnpj(cnpj)
-                .orElseThrow(() -> new EntityNotFoundException("Empresa com CNPJ " + cnpj + " não encontrada para deleção."));
+    public void deletaEmpresaPorCnpj(String cnpj) {
+        Empresa empresa = empresaRepository.buscaEmpresaPorCnpj(cnpj)
+                .orElseThrow(() -> new EntityNotFoundException("Empresa não encontrada"));
         empresaRepository.delete(empresa);
     }
     public Double calculaOcupacaoEstoque(Integer idEmpresa){
         try {
             return (double) Math.round(empresaRepository.calculaPorcentagemOcupacao(idEmpresa)*100)/100;
         }catch (NullPointerException e){
-            throw new EntityNotFoundException("Empresa não registrada no banco.");
+            throw new EntityNotFoundException("Empresa não encontrada");
         }
     }
 }

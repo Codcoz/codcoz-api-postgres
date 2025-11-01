@@ -65,7 +65,7 @@ public class EmpresaController {
     public ResponseEntity<EmpresaResponseDTO> buscarEmpresa(
             @Parameter(description = "CNPJ da empresa (somente números)", example = "12345678000199")
             @PathVariable String cnpj) {
-        return ResponseEntity.ok(empresaService.buscarEmpresaPorCnpj(cnpj));
+        return ResponseEntity.ok(empresaService.buscaEmpresaPorCnpj(cnpj));
     }
 
     @Operation(
@@ -86,7 +86,7 @@ public class EmpresaController {
             @Parameter(description = "CNPJ da empresa (somente números)", example = "12345678000199")
             @PathVariable String cnpj) {
 
-        empresaService.deletarEmpresaPorCnpj(cnpj);
+        empresaService.deletaEmpresaPorCnpj(cnpj);
         return ResponseEntity.ok(Map.of("mensagem", "Empresa com CNPJ " + cnpj + " deletada com sucesso."));
     }
 

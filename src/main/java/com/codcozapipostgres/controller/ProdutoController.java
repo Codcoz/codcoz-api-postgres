@@ -77,7 +77,7 @@ public class ProdutoController {
     })
     @GetMapping("/listar/estoque-baixo/{idEmpresa}")
     public ResponseEntity<List<ProdutoResponseDTO>> listarEstoqueBaixo(@PathVariable Integer idEmpresa) {
-        return ResponseEntity.ok(produtoService.listarEstoqueBaixo(idEmpresa));
+        return ResponseEntity.ok(produtoService.listaEstoqueBaixo(idEmpresa));
     }
 
     @Operation(summary = "Lista os produtos próximos do vencimento")
@@ -89,7 +89,7 @@ public class ProdutoController {
     })
     @GetMapping("/listar/proximo-validade/{idEmpresa}")
     public ResponseEntity<List<ProdutoResponseDTO>> listarProximosValidade(@PathVariable Integer idEmpresa) {
-        return ResponseEntity.ok(produtoService.listarProximosValidade(idEmpresa));
+        return ResponseEntity.ok(produtoService.listaProximosValidade(idEmpresa));
     }
 
     @Operation(summary = "Lista o estoque completo de produtos")
@@ -101,7 +101,7 @@ public class ProdutoController {
     })
     @GetMapping("/listar/estoque/{idEmpresa}")
     public ResponseEntity<List<ProdutoResponseDTO>> listarEstoque(@PathVariable Integer idEmpresa) {
-        return ResponseEntity.ok(produtoService.listarEstoque(idEmpresa));
+        return ResponseEntity.ok(produtoService.listaEstoque(idEmpresa));
     }
 
     @Operation(summary = "Busca produto pelo código EAN")
@@ -113,7 +113,7 @@ public class ProdutoController {
     })
     @GetMapping("/buscar/{codigoEan}")
     public ResponseEntity<ProdutoResponseDTO> buscarProdutoPorCodigoEan(@PathVariable String codigoEan) {
-        return ResponseEntity.ok(produtoService.buscarPorCodigoEan(codigoEan));
+        return ResponseEntity.ok(produtoService.buscaPorCodigoEan(codigoEan));
     }
 
     @Operation(summary = "Registra nova entrada de produto no estoque")

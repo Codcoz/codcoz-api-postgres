@@ -6,6 +6,7 @@ import com.codcozapipostgres.exception.ErrorResponse;
 import com.codcozapipostgres.service.FuncionarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Tag(name="Funcionario",description = "Operações para gerenciar os funcionários da empresa.")
@@ -39,8 +41,21 @@ public class FuncionarioController {
     public ResponseEntity<FuncionarioResponseDTO> buscarFuncionario(
             @Parameter(description = "E-mail do funcionário", example = "maria.souza@gmail.com")
             @PathVariable String email) {
-        return ResponseEntity.ok(funcionarioService.buscarPorEmail(email));
+        return ResponseEntity.ok(funcionarioService.buscaFuncionario(email));
     }
+
+    @Operation(
+            summary = "Listar funcionários",
+            description = "Lista os funcionários da empresa correspondente"
+    )@ApiResponse(responseCode = "200",description = "Funcionários encontrados",
+    content = @Content(array = @ArraySchema(schema = @Schema(implementation = FuncionarioResponseDTO.class))))
+    @ApiResponse(responseCode = "404", description = "Nenhum funcionário encontrado",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @GetMapping("/listar/{empresaId}")
+    public ResponseEntity<List<FuncionarioResponseDTO>> listarFuncionarios(@Parameter(description = "ID da empresa no banco de dados", example = "1") @PathVariable Integer empresaId){
+        return ResponseEntity.ok(funcionarioService.listaFuncionarios(empresaId));
+    }
+
 
     @Operation(
             summary = "Insere um novo funcionário",
@@ -55,7 +70,7 @@ public class FuncionarioController {
     @PostMapping("/inserir")
     public ResponseEntity<FuncionarioResponseDTO> inserirFuncionario(
             @RequestBody FuncionarioRequestDTO funcionarioRequestDTO) {
-        return ResponseEntity.ok(funcionarioService.inserirFuncionario(funcionarioRequestDTO));
+        return ResponseEntity.ok(funcionarioService.criaFuncionario(funcionarioRequestDTO));
     }
 
     @Operation(
@@ -72,7 +87,7 @@ public class FuncionarioController {
     public ResponseEntity<FuncionarioResponseDTO> atualizarFuncionario(
             @Parameter(description = "ID do funcionário", example = "1") @PathVariable Long id,
             @RequestBody FuncionarioRequestDTO funcionarioRequestDTO) {
-        return ResponseEntity.ok(funcionarioService.atualizarFuncionario(id, funcionarioRequestDTO));
+        return ResponseEntity.ok(funcionarioService.atualizaFuncionario(id, funcionarioRequestDTO));
     }
 
     @Operation(
@@ -86,6 +101,6 @@ public class FuncionarioController {
     @PutMapping("/demitir/{id}")
     public ResponseEntity<FuncionarioResponseDTO> demitirFuncionario(
             @Parameter(description = "ID do funcionário", example = "1") @PathVariable Long id) {
-        return ResponseEntity.ok(funcionarioService.desligarFuncionario(id));
+        return ResponseEntity.ok(funcionarioService.desligaFuncionario(id));
     }
 }

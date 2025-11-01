@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FuncionarioService {
@@ -28,16 +30,8 @@ public class FuncionarioService {
         return objectMapper.convertValue(funcionario, FuncionarioResponseDTO.class);
     }
 
-    public FuncionarioResponseDTO buscarPorEmail(String email){
-        Funcionario funcionario = funcionarioRepository.buscarPorEmail(email);
-        if(funcionario == null){
-            throw new EntityNotFoundException("Estoquista não registado no banco.");
-        }
-        return toResponseDTO(funcionario);
-    }
-
     @Transactional
-    public FuncionarioResponseDTO inserirFuncionario(FuncionarioRequestDTO funcionarioRequestDTO){
+    public FuncionarioResponseDTO criaFuncionario(FuncionarioRequestDTO funcionarioRequestDTO){
         Funcionario funcionario = fromRequestDTO(funcionarioRequestDTO);
         funcionario.setDataContratacao(LocalDate.now());
         funcionario.setStatus("Ativo");
@@ -46,10 +40,10 @@ public class FuncionarioService {
     }
 
     @Transactional
-    public FuncionarioResponseDTO atualizarFuncionario(Long id, FuncionarioRequestDTO funcionarioRequestDTO){
-        Funcionario funcionario = funcionarioRepository.buscarPorId(id);
+    public FuncionarioResponseDTO atualizaFuncionario(Long id, FuncionarioRequestDTO funcionarioRequestDTO){
+        Funcionario funcionario = funcionarioRepository.buscaPorId(id);
         if(funcionario == null){
-            throw new EntityNotFoundException("Funcionário não registrado no banco.");
+            throw new EntityNotFoundException("Funcionário não encontrado");
         }
         if(funcionarioRequestDTO != null){
             if (funcionarioRequestDTO.getEmpresaId() != null){
@@ -75,14 +69,26 @@ public class FuncionarioService {
     }
 
     @Transactional
-    public FuncionarioResponseDTO desligarFuncionario(Long id){
-        Funcionario funcionario = funcionarioRepository.buscarPorId(id);
+    public FuncionarioResponseDTO desligaFuncionario(Long id){
+        Funcionario funcionario = funcionarioRepository.buscaPorId(id);
         if(funcionario == null){
-            throw new EntityNotFoundException("Funcionário não registrado no banco.");
+            throw new EntityNotFoundException("Funcionário não encontrado");
         }
         funcionario.setStatus("Inativo");
         funcionarioRepository.save(funcionario);
         return toResponseDTO(funcionario);
     }
 
+    public FuncionarioResponseDTO buscaFuncionario(String email){
+        Funcionario funcionario = funcionarioRepository.buscaPorEmail(email);
+        if(funcionario == null){
+            throw new EntityNotFoundException("Estoquista não registado no banco.");
+        }
+        return toResponseDTO(funcionario);
+    }
+
+    public List<FuncionarioResponseDTO> listaFuncionarios(Integer empresaId){
+        List<Funcionario> funcionarios = funcionarioRepository.buscaPorEmpresaId(empresaId);
+        return funcionarios.stream().map(this::toResponseDTO).collect(Collectors.toList());
+    }
 }

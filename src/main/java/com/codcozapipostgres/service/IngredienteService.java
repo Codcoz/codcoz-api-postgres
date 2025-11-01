@@ -16,24 +16,28 @@ import java.util.stream.Collectors;
 public class IngredienteService {
     private final IngredienteRepository ingredienteRepository;
     private final ObjectMapper objectMapper;
+
     public IngredienteService(IngredienteRepository ingredienteRepository, ObjectMapper objectMapper) {
         this.ingredienteRepository = ingredienteRepository;
         this.objectMapper = objectMapper;
     }
+
     public Ingrediente fromRequestDto(IngredienteRequestDTO ingredienteRequestDTO){
         return  objectMapper.convertValue(ingredienteRequestDTO, Ingrediente.class);
     }
     public IngredienteResponseDTO toResponseDto(Ingrediente ingrediente){
         return objectMapper.convertValue(ingrediente, IngredienteResponseDTO.class);
     }
+
     @Transactional
-    public IngredienteResponseDTO criarIngrediente(IngredienteRequestDTO ingredienteRequestDTO){
+    public IngredienteResponseDTO criaIngrediente(IngredienteRequestDTO ingredienteRequestDTO){
         Ingrediente ingrediente = fromRequestDto(ingredienteRequestDTO);
         ingredienteRepository.save(ingrediente);
         return toResponseDto(ingrediente);
     }
+
     @Transactional
-    public IngredienteResponseDTO atualizarIngrediente(IngredienteRequestDTO ingredienteRequestDTO){
+    public IngredienteResponseDTO atualizaIngrediente(IngredienteRequestDTO ingredienteRequestDTO){
         Ingrediente ingrediente = fromRequestDto(ingredienteRequestDTO);
         if (ingrediente.getId()!=null && ingredienteRepository.existsById(ingrediente.getId())){
             if (ingrediente.getNome()!=null){
@@ -45,28 +49,29 @@ public class IngredienteService {
             ingredienteRepository.save(ingrediente);
             return toResponseDto(ingrediente);
         }else {
-            throw new EntityNotFoundException("Nenhum ingrediente foi encontrado");
+            throw new EntityNotFoundException("Ingrediente não encontrado");
         }
     }
+
     @Transactional
-    public void deletarIngrediente(Long id) {
+    public void deletaIngrediente(Long id) {
         if (ingredienteRepository.existsById(id)) {
             ingredienteRepository.deleteById(id);
         } else {
-            throw new EntityNotFoundException("Nenhum ingrediente foi encontrado");
+            throw new EntityNotFoundException("Ingrediente não encontrado");
         }
     }
-    public List<IngredienteResponseDTO> listar() {
+
+    public List<IngredienteResponseDTO> listaIngredientes() {
         List<Ingrediente> ingredientes = ingredienteRepository.findAll();
         return ingredientes.stream()
                 .map(this::toResponseDto)
                 .collect(Collectors.toList());
     }
 
-    public IngredienteResponseDTO buscarPorId(Long id) {
+    public IngredienteResponseDTO buscaIngrediente(Long id) {
         Ingrediente ingrediente = ingredienteRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Nenhum ingrediente foi encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Ingrediente não encontrado"));
         return toResponseDto(ingrediente);
     }
-
 }
