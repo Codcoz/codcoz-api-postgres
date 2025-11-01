@@ -11,6 +11,9 @@ import java.util.List;
 @Repository
 public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long> {
 
+    @Query(value = "SELECT * FROM movimentacao WHERE empresa_id = :idEmpresa",nativeQuery = true)
+    List<Movimentacao> listaMovimentacoesPorEmpresa(Long idEmpresa);
+
     @Query(value = "SELECT * FROM movimentacao WHERE tipo_movimentacao_id = 1 AND empresa_id = :idEmpresa", nativeQuery = true)
     List<Movimentacao> listaEntradasPorEmpresa(@Param("idEmpresa") Long idEmpresa);
 

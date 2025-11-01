@@ -30,9 +30,9 @@ public class MovimentacaoController {
             description = "Retorna todas as movimentações cadastradas no sistema.")
     @ApiResponse(responseCode = "200", description = "Lista de movimentações",
             content = @Content(schema = @Schema(implementation = MovimentacaoResponseDTO.class)))
-    @GetMapping("/listar")
-    public ResponseEntity<List<MovimentacaoResponseDTO>> listarMovimentacoes() {
-        return ResponseEntity.ok(movimentacaoService.listaMovimentacoes());
+    @GetMapping("/listar/{empresaId}")
+    public ResponseEntity<List<MovimentacaoResponseDTO>> listarMovimentacoes(@PathVariable Long empresaId) {
+        return ResponseEntity.ok(movimentacaoService.listaMovimentacoes(empresaId));
     }
 
     @Operation(summary = "Busca uma movimentação pelo ID",

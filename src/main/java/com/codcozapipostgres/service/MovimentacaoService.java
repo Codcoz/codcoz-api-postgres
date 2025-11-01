@@ -23,8 +23,8 @@ public class MovimentacaoService {
         return objectMapper.convertValue(movimentacao, MovimentacaoResponseDTO.class);
     }
 
-    public List<MovimentacaoResponseDTO> listaMovimentacoes() {
-        return movimentacaoRepository.findAll().stream()
+    public List<MovimentacaoResponseDTO> listaMovimentacoes(Long idEmpresa) {
+        return movimentacaoRepository.listaMovimentacoesPorEmpresa(idEmpresa).stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
