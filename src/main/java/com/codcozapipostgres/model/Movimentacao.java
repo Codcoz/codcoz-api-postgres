@@ -17,6 +17,8 @@ public class Movimentacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "empresa_id")
+    private Long empresaId;
     @Column(name = "produto_id")
     private Integer produtoId;
     @Column(name = "tipo_movimentacao_id")

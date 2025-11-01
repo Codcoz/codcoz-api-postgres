@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 public class MovimentacaoResponseDTO {
     private Long id;
+    private Long empresaId;
     private Integer produtoId;
     private Integer tipoMovimentacaoId;
     private LocalDateTime data;
