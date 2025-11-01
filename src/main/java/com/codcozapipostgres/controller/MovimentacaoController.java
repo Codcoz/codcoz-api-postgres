@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
 @Tag(name="Movimentação", description = "Operações para gerenciar as movimentações de produtos da empresa.")
 @RestController
 @RequestMapping("/movimentacao")

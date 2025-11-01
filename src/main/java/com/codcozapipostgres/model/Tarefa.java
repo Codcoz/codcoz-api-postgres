@@ -33,8 +33,6 @@ public class Tarefa {
     private String situacao;
     @Column(name = "data_criacao")
     private LocalDate dataCriacao;
-    @Column(name="data_tarefa")
-    private LocalDate dataTarefa;
     @Column(name = "data_limite")
     private LocalDate dataLimite;
     @Column(name = "data_conclusao")
