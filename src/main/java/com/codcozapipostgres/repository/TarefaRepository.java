@@ -1,6 +1,5 @@
 package com.codcozapipostgres.repository;
 
-import com.codcozapipostgres.dto.TarefaResponseDTO;
 import com.codcozapipostgres.model.Tarefa;
 import com.codcozapipostgres.projection.TarefaProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,8 +28,8 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
                                                 @Param("email") String email,
                                                 @Param("tipo") String tipo);
 
-    @Query(value = "SELECT * FROM tarefa WHERE data_conclusao = :data",nativeQuery = true)
-    List<TarefaResponseDTO> buscaTarefaPorConclusao(@Param("data") LocalDate data);
+    @Query(value = "SELECT * FROM tarefa WHERE data_conclusao >= :data_conclusao AND empresa_id = :empresaId",nativeQuery = true)
+    List<Tarefa> buscaTarefaPorConclusao(@Param("data_conclusao") LocalDate dataConclusao, @Param("empresaId") Long empresaId);
 
     @Procedure(procedureName = "sp_conclui_tarefa")
     void finalizaTarefa(Integer idn);

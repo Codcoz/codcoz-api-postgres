@@ -28,7 +28,10 @@ public class TarefaService {
     private Tarefa fromRequestDTO(TarefaRequestDTO tarefaRequestDTO) {
         return objectMapper.convertValue (tarefaRequestDTO, Tarefa.class);
     }
-    private TarefaResponseDTO toResponseDTO(TarefaProjection projection) {
+    private TarefaResponseDTO toResponseDTO(Tarefa tarefa) {
+        return objectMapper.convertValue (tarefa, TarefaResponseDTO.class);
+    }
+    private TarefaResponseDTO fromProjection(TarefaProjection projection) {
         return new TarefaResponseDTO(
                 projection.getId(),
                 projection.getEmpresa(),
@@ -48,24 +51,35 @@ public class TarefaService {
     public List<TarefaResponseDTO> buscaPorData(LocalDate data, String email) {
         List<TarefaProjection> tarefas = tarefaRepository.buscaPorData(data, email);
         return tarefas.stream()
-                .map(this::toResponseDTO)
+                .map(this::fromProjection)
                 .collect(Collectors.toList());
     }
 
     public List<TarefaResponseDTO> buscaPorPeriodo(LocalDate dataInicio, LocalDate dataFim, String email) {
         List<TarefaProjection> tarefas = tarefaRepository.buscaPorPeriodo(dataInicio, dataFim, email);
         return tarefas.stream()
-                .map(this::toResponseDTO)
+                .map(this::fromProjection)
                 .collect(Collectors.toList());
     }
 
     public List<TarefaResponseDTO> buscaPorPeriodoETipo(LocalDate dataInicio, LocalDate dataFim, String email, String tipo) {
         List<TarefaProjection> tarefas = tarefaRepository.buscaPorPeriodoETipo(dataInicio, dataFim, email, tipo);
         return tarefas.stream()
-                .map(this::toResponseDTO)
+                .map(this::fromProjection)
                 .collect(Collectors.toList());
     }
 
+    public List<TarefaResponseDTO> buscarConcluidas(Integer dias,Long empresaId){
+        try{
+            LocalDate dataLimite = LocalDate.now().minusDays(dias);
+            List<Tarefa> tarefas = tarefaRepository.buscaTarefaPorConclusao(dataLimite, empresaId);
+            return tarefas.stream()
+                    .map(this::toResponseDTO)
+                    .collect(Collectors.toList());
+        }catch(EntityNotFoundException e){
+            throw new EntityNotFoundException("Nenhuma tarefa encontrada com esse parâmetro.");
+        }
+    }
 
     public void finalizaTarefa(Integer idTarefa) {
         try {

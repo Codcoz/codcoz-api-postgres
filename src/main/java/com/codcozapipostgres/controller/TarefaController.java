@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@CrossOrigin(origins = "*")
 @Tag(name = "Tarefa", description = "Operações para gerenciar as tarefas a serem realizadas pelos estoquistas.")
 @RestController
 @RequestMapping("/tarefa")
@@ -192,4 +191,49 @@ public class TarefaController {
         tarefaService.finalizaTarefa(id);
         return ResponseEntity.ok("Tarefa finalizada com sucesso.");
     }
+    @Operation(
+            summary = "Busca tarefas concluídas nos últimos dias",
+            description = "Retorna todas as tarefas concluídas nos últimos 'X' dias, filtradas pela empresa informada.",
+            parameters = {
+                    @Parameter(name = "dias", description = "Número de dias retroativos para a busca", example = "7"),
+                    @Parameter(name = "empresaId", description = "Identificador da empresa", example = "3")
+            }
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Tarefas concluídas encontradas com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TarefaResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Nenhuma tarefa concluída encontrada no período informado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Tarefas não encontradas",
+                                    value = """
+                                        {
+                                          "erro": "Objeto não encontrado.",
+                                          "descricao": "Nenhuma tarefa concluída encontrada para os parâmetros informados.",
+                                          "status": 404
+                                        }
+                                        """
+                            ))),
+            @ApiResponse(responseCode = "500", description = "Erro interno ao buscar tarefas concluídas",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Erro interno",
+                                    value = """
+                                        {
+                                          "erro": "Erro interno no servidor.",
+                                          "descricao": "Erro inesperado ao buscar tarefas concluídas no banco de dados.",
+                                          "status": 500
+                                        }
+                                        """
+                            )))
+    })
+    @GetMapping("/buscar-concluidas/{empresaId}")
+    public ResponseEntity<List<TarefaResponseDTO>> buscarTarefasConcluidas(@RequestParam Integer dias, @PathVariable Long empresaId) {
+        List<TarefaResponseDTO> tarefas = tarefaService.buscarConcluidas(dias, empresaId);
+        return ResponseEntity.ok(tarefas);
+    }
+
 }
