@@ -7,6 +7,7 @@ import com.codcozapipostgres.projection.TarefaProjection;
 import com.codcozapipostgres.repository.TarefaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Service;
@@ -92,6 +93,7 @@ public class TarefaService {
         }
     }
 
+    @Transactional
     public void finalizaTarefa(Integer idTarefa) {
         try {
             tarefaRepository.finalizaTarefa(idTarefa);
@@ -106,5 +108,12 @@ public class TarefaService {
         catch (DataAccessException e) {
             throw new RuntimeException("Erro de acesso ao banco de dados: " + e.getMessage(), e);
         }
+    }
+
+    @Transactional
+    public TarefaResponseDTO criaTarefa(TarefaRequestDTO tarefaRequestDTO) {
+        Tarefa tarefa = fromRequestDTO(tarefaRequestDTO);
+        tarefaRepository.save(tarefa);
+        return toResponseDTO(tarefa);
     }
 }

@@ -1,5 +1,6 @@
 package com.codcozapipostgres.controller;
 
+import com.codcozapipostgres.dto.TarefaRequestDTO;
 import com.codcozapipostgres.dto.TarefaResponseDTO;
 import com.codcozapipostgres.exception.ErrorResponse;
 import com.codcozapipostgres.service.TarefaService;
@@ -278,4 +279,59 @@ public class TarefaController {
         List<TarefaResponseDTO> tarefas = tarefaService.listaTarefas(empresaId);
         return ResponseEntity.ok(tarefas);
     }
+
+    @Operation(
+            summary = "Cria uma nova tarefa",
+            description = "Registra uma nova tarefa no sistema com os dados fornecidos no request body."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Tarefa criada com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TarefaResponseDTO.class),
+                            examples = @ExampleObject(
+                                    name = "Tarefa criada",
+                                    value = """
+                                        {
+                                          "id": 101,
+                                          "descricao": "Conferir estoque de produtos",
+                                          "tipo": "Conferência",
+                                          "responsavel": "maria.souza@empresa.com",
+                                          "dataPrevista": "2025-11-01",
+                                          "status": "PENDENTE"
+                                        }
+                                        """
+                            ))),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos para criação da tarefa",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Erro de validação",
+                                    value = """
+                                        {
+                                          "erro": "Requisição inválida.",
+                                          "descricao": "Os dados fornecidos para criação da tarefa são inválidos.",
+                                          "status": 400
+                                        }
+                                        """
+                            ))),
+            @ApiResponse(responseCode = "500", description = "Erro interno ao criar a tarefa",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Erro interno",
+                                    value = """
+                                        {
+                                          "erro": "Erro interno no servidor.",
+                                          "descricao": "Erro inesperado ao salvar a tarefa no banco de dados.",
+                                          "status": 500
+                                        }
+                                        """
+                            )))
+    })
+    @PostMapping("/criar")
+    public ResponseEntity<TarefaResponseDTO> criaTarefa(@RequestBody TarefaRequestDTO tarefaRequestDTO) {
+        TarefaResponseDTO tarefaCriada = tarefaService.criaTarefa(tarefaRequestDTO);
+        return ResponseEntity.status(201).body(tarefaCriada);
+    }
+
 }
