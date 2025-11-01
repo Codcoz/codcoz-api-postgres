@@ -98,7 +98,7 @@ public class ProdutoController {
             @ApiResponse(responseCode = "404", description = "Nenhum produto encontrado",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @GetMapping("/listar/estoque/{idEmpresa}")
+    @GetMapping("/listar/{idEmpresa}")
     public ResponseEntity<List<ProdutoResponseDTO>> listarEstoque(@PathVariable Integer idEmpresa) {
         return ResponseEntity.ok(produtoService.listaEstoque(idEmpresa));
     }
