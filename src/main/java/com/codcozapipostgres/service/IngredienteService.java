@@ -62,8 +62,8 @@ public class IngredienteService {
         }
     }
 
-    public List<IngredienteResponseDTO> listaIngredientes() {
-        List<Ingrediente> ingredientes = ingredienteRepository.findAll();
+    public List<IngredienteResponseDTO> listaIngredientes(Long empresaId) {
+        List<Ingrediente> ingredientes = ingredienteRepository.listaPorEmpresa(empresaId);
         return ingredientes.stream()
                 .map(this::toResponseDto)
                 .collect(Collectors.toList());

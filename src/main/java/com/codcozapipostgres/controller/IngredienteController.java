@@ -34,9 +34,9 @@ public class IngredienteController {
             content = @Content(schema = @Schema(implementation = IngredienteResponseDTO.class)))
     @ApiResponse(responseCode = "500", description = "Erro interno",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @GetMapping("/listar")
-    public ResponseEntity<List<IngredienteResponseDTO>> listarTodos() {
-        return ResponseEntity.ok(ingredienteService.listaIngredientes());
+    @GetMapping("/listar/{empresaId}")
+    public ResponseEntity<List<IngredienteResponseDTO>> listarTodos(@PathVariable Long empresaId) {
+        return ResponseEntity.ok(ingredienteService.listaIngredientes(empresaId));
     }
 
     @Operation(
