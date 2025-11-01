@@ -34,7 +34,7 @@ public class ProdutoService {
 
     public Integer quantidadeEstoque(Integer idEmpresa) {
         try {
-            Integer quantidade = produtoRepository.contarEstoque(idEmpresa);
+            Integer quantidade = produtoRepository.contaEstoque(idEmpresa);
             if (quantidade == null) {
                 throw new EntityNotFoundException("Empresa não encontrada ou sem produtos cadastrados.");
             }
@@ -46,7 +46,7 @@ public class ProdutoService {
 
     public Integer quantidadeEstoqueBaixo(Integer idEmpresa) {
         try {
-            Integer quantidade = produtoRepository.contarBaixoEstoque(idEmpresa);
+            Integer quantidade = produtoRepository.contaBaixoEstoque(idEmpresa);
             if (quantidade == null) {
                 throw new EntityNotFoundException("Empresa não encontrada ou sem produtos cadastrados.");
             }
@@ -58,7 +58,7 @@ public class ProdutoService {
 
     public Integer quantidadeProximosValidade(Integer idEmpresa) {
         try {
-            Integer quantidade = produtoRepository.contarProximosValidade(idEmpresa);
+            Integer quantidade = produtoRepository.contaProximosValidade(idEmpresa);
             if (quantidade == null) {
                 throw new EntityNotFoundException("Empresa não encontrada ou sem produtos cadstrados.");
             }
@@ -68,32 +68,32 @@ public class ProdutoService {
         }
     }
 
-    public List<ProdutoResponseDTO> listarEstoqueBaixo(Integer idEmpresa) {
-        List<Produto> produtos = produtoRepository.listarEstoqueBaixo(idEmpresa);
+    public List<ProdutoResponseDTO> listaEstoqueBaixo(Integer idEmpresa) {
+        List<Produto> produtos = produtoRepository.listaEstoqueBaixo(idEmpresa);
         if (produtos == null || produtos.isEmpty()) {
             throw new EntityNotFoundException("Nenhum produto com estoque baixo.");
         }
         return produtos.stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
 
-    public List<ProdutoResponseDTO> listarProximosValidade(Integer idEmpresa) {
-        List<Produto> produtos = produtoRepository.listarProximoValidade(idEmpresa);
+    public List<ProdutoResponseDTO> listaProximosValidade(Integer idEmpresa) {
+        List<Produto> produtos = produtoRepository.listaProximoValidade(idEmpresa);
         if (produtos == null || produtos.isEmpty()) {
             throw new EntityNotFoundException("Nenhum produto próximo à validade.");
         }
         return produtos.stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
 
-    public List<ProdutoResponseDTO> listarEstoque(Integer idEmpresa) {
-        List<Produto> produtos = produtoRepository.listarEstoque(idEmpresa);
+    public List<ProdutoResponseDTO> listaEstoque(Integer idEmpresa) {
+        List<Produto> produtos = produtoRepository.listaEstoque(idEmpresa);
         if (produtos == null || produtos.isEmpty()) {
             throw new EntityNotFoundException("Produto não encontrado.");
         }
         return produtos.stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
 
-    public ProdutoResponseDTO buscarPorCodigoEan(String codigoEan) {
-        Produto produto = produtoRepository.buscarPorCodigoEan(codigoEan);
+    public ProdutoResponseDTO buscaPorCodigoEan(String codigoEan) {
+        Produto produto = produtoRepository.buscaPorCodigoEan(codigoEan);
         if (produto == null) {
             throw new EntityNotFoundException("Produto não encontrado.");
         }

@@ -12,31 +12,31 @@ import java.util.List;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto,Long> {
     @Query(value = "SELECT * FROM func_conta_produto_validade(:idEmpresa)", nativeQuery = true)
-    Integer contarProximosValidade(@Param("idEmpresa") Integer idEmpresa);
+    Integer contaProximosValidade(@Param("idEmpresa") Integer idEmpresa);
 
     @Query(value = "SELECT * FROM func_conta_produto_baixo_estoque(:idEmpresa)", nativeQuery = true)
-    Integer contarBaixoEstoque(@Param("idEmpresa") Integer idEmpresa);
+    Integer contaBaixoEstoque(@Param("idEmpresa") Integer idEmpresa);
 
     @Query(value = "SELECT * FROM func_conta_produto(:idEmpresa)",nativeQuery = true)
-    Integer contarEstoque(@Param("idEmpresa") Integer idEmpresa);
+    Integer contaEstoque(@Param("idEmpresa") Integer idEmpresa);
 
     @Query(value = "SELECT p.* FROM produto p " +
             "JOIN ingrediente i ON p.ingrediente_id = i.id " +
             "WHERE p.quantidade < i.quantidade_minima " +
             "AND p.empresa_id = (:idEmpresa)", nativeQuery = true)
-    List<Produto> listarEstoqueBaixo(@Param("idEmpresa") Integer idEmpresa);
+    List<Produto> listaEstoqueBaixo(@Param("idEmpresa") Integer idEmpresa);
 
     @Query(value = "SELECT p.* FROM produto p " +
             "WHERE p.validade - CURRENT_DATE <= 14 " +
             "AND p.validade >= CURRENT_DATE " +
             "AND p.empresa_id = (:idEmpresa)",nativeQuery = true)
-    List<Produto> listarProximoValidade(@Param("idEmpresa") Integer idEmpresa);
+    List<Produto> listaProximoValidade(@Param("idEmpresa") Integer idEmpresa);
 
     @Query(value = "SELECT p.* FROM produto p WHERE p.empresa_id = (:id)",nativeQuery = true)
-    List<Produto> listarEstoque(@Param("id") Integer idEmpresa);
+    List<Produto> listaEstoque(@Param("id") Integer idEmpresa);
 
     @Query(value = "SELECT p.* FROM produto p WHERE p.codigo_ean = :codigoEan", nativeQuery = true)
-    Produto buscarPorCodigoEan(@Param("codigoEan") String codigoEan);
+    Produto buscaPorCodigoEan(@Param("codigoEan") String codigoEan);
 
     @Procedure(procedureName = "public.sp_movimenta_produtos")
     void movimentaProdutos(@Param("codigo_eann") String codigoEan, @Param("quantidaden") Integer quantidade);

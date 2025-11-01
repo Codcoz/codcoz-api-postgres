@@ -34,14 +34,14 @@ public class EmpresaService {
         empresaRepository.save(empresa);
         return toResponseDTO(empresa);
     }
-    public EmpresaResponseDTO buscarEmpresaPorCnpj(String cnpj) {
-        Empresa empresa = empresaRepository.findByCnpj(cnpj)
+    public EmpresaResponseDTO buscaEmpresaPorCnpj(String cnpj) {
+        Empresa empresa = empresaRepository.buscaEmpresaPorCnpj(cnpj)
                 .orElseThrow(() -> new EntityNotFoundException("Empresa não encontrada"));
         return toResponseDTO(empresa);
     }
     @Transactional
-    public void deletarEmpresaPorCnpj(String cnpj) {
-        Empresa empresa = empresaRepository.findByCnpj(cnpj)
+    public void deletaEmpresaPorCnpj(String cnpj) {
+        Empresa empresa = empresaRepository.buscaEmpresaPorCnpj(cnpj)
                 .orElseThrow(() -> new EntityNotFoundException("Empresa não encontrada"));
         empresaRepository.delete(empresa);
     }

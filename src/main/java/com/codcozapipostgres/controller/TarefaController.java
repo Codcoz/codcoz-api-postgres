@@ -71,7 +71,7 @@ public class TarefaController {
     public ResponseEntity<List<TarefaResponseDTO>> buscarTarefaPorData(
             @PathVariable String email,
             @RequestParam LocalDate data) {
-        List<TarefaResponseDTO> tarefas = tarefaService.buscarPorData(data, email);
+        List<TarefaResponseDTO> tarefas = tarefaService.buscaPorData(data, email);
         return ResponseEntity.ok(tarefas);
     }
 
@@ -107,7 +107,7 @@ public class TarefaController {
             @PathVariable String email,
             @RequestParam(name = "data_inicio") LocalDate dataInicio,
             @RequestParam(name = "data_fim") LocalDate dataFim) {
-        List<TarefaResponseDTO> tarefas = tarefaService.buscarPorPeriodo(dataInicio, dataFim, email);
+        List<TarefaResponseDTO> tarefas = tarefaService.buscaPorPeriodo(dataInicio, dataFim, email);
         return ResponseEntity.ok(tarefas);
     }
 
@@ -145,7 +145,7 @@ public class TarefaController {
             @RequestParam(name = "data_inicio") LocalDate dataInicio,
             @RequestParam(name = "data_fim") LocalDate dataFim,
             @RequestParam String tipo) {
-        List<TarefaResponseDTO> tarefas = tarefaService.buscarPorPeriodoETipo(dataInicio, dataFim, email, tipo);
+        List<TarefaResponseDTO> tarefas = tarefaService.buscaPorPeriodoETipo(dataInicio, dataFim, email, tipo);
         return ResponseEntity.ok(tarefas);
     }
 
@@ -189,7 +189,7 @@ public class TarefaController {
     })
     @PutMapping("/finalizar-tarefa/{id}")
     public ResponseEntity<String> finalizarTarefa(@PathVariable Integer id) {
-        tarefaService.finalizarTarefa(id);
+        tarefaService.finalizaTarefa(id);
         return ResponseEntity.ok("Tarefa finalizada com sucesso.");
     }
 }

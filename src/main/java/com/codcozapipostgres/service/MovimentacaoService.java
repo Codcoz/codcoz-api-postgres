@@ -1,6 +1,5 @@
 package com.codcozapipostgres.service;
 
-import com.codcozapipostgres.dto.MovimentacaoRequestDTO;
 import com.codcozapipostgres.dto.MovimentacaoResponseDTO;
 import com.codcozapipostgres.model.Movimentacao;
 import com.codcozapipostgres.repository.MovimentacaoRepository;
@@ -13,7 +12,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class MovimentacaoService {
-
     private final MovimentacaoRepository movimentacaoRepository;
     private final ObjectMapper objectMapper;
 
@@ -25,38 +23,37 @@ public class MovimentacaoService {
         return objectMapper.convertValue(movimentacao, MovimentacaoResponseDTO.class);
     }
 
-    public List<MovimentacaoResponseDTO> listarTodos() {
+    public List<MovimentacaoResponseDTO> listaMovimentacoes() {
         return movimentacaoRepository.findAll().stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public MovimentacaoResponseDTO buscarPorId(Long id) {
+    public MovimentacaoResponseDTO buscaMovimentacao(Long id) {
         Movimentacao movimentacao = movimentacaoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Movimentação não encontrada"));
         return toResponseDTO(movimentacao);
     }
 
-    public List<MovimentacaoResponseDTO> listarEntradasPorEmpresa(Long idEmpresa) {
-        return movimentacaoRepository.listarEntradasPorEmpresa(idEmpresa)
+    public List<MovimentacaoResponseDTO> listaEntradas(Long idEmpresa) {
+        return movimentacaoRepository.listaEntradasPorEmpresa(idEmpresa)
+                .stream().map(this::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+    public List<MovimentacaoResponseDTO> listaBaixas(Long idEmpresa) {
+        return movimentacaoRepository.listaBaixasPorEmpresa(idEmpresa)
                 .stream().map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<MovimentacaoResponseDTO> listarBaixasPorEmpresa(Long idEmpresa) {
-        return movimentacaoRepository.listarBaixasPorEmpresa(idEmpresa)
+    public List<MovimentacaoResponseDTO> listaEntradasPorPeriodo(Long idEmpresa, String dataInicio, String dataFim) {
+        return movimentacaoRepository.listaEntradasPorEmpresaPorPeriodo(idEmpresa, dataInicio, dataFim)
                 .stream().map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<MovimentacaoResponseDTO> listarEntradasPorEmpresaPorPeriodo(Long idEmpresa, String dataInicio, String dataFim) {
-        return movimentacaoRepository.listarEntradasPorEmpresaPorPeriodo(idEmpresa, dataInicio, dataFim)
-                .stream().map(this::toResponseDTO)
-                .collect(Collectors.toList());
-    }
-
-    public List<MovimentacaoResponseDTO> listarBaixasPorEmpresaPorPeriodo(Long idEmpresa, String dataInicio, String dataFim) {
-        return movimentacaoRepository.listarBaixasPorEmpresaPorPeriodo(idEmpresa, dataInicio, dataFim)
+    public List<MovimentacaoResponseDTO> listaBaixasPorPeriodo(Long idEmpresa, String dataInicio, String dataFim) {
+        return movimentacaoRepository.listaBaixasPorEmpresaPorPeriodo(idEmpresa, dataInicio, dataFim)
                 .stream().map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }

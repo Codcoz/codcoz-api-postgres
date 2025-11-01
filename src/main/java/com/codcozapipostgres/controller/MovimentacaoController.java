@@ -1,6 +1,5 @@
 package com.codcozapipostgres.controller;
 
-import com.codcozapipostgres.dto.MovimentacaoRequestDTO;
 import com.codcozapipostgres.dto.MovimentacaoResponseDTO;
 import com.codcozapipostgres.exception.ErrorResponse;
 import com.codcozapipostgres.service.MovimentacaoService;
@@ -33,7 +32,7 @@ public class MovimentacaoController {
             content = @Content(schema = @Schema(implementation = MovimentacaoResponseDTO.class)))
     @GetMapping("/listar")
     public ResponseEntity<List<MovimentacaoResponseDTO>> listarMovimentacoes() {
-        return ResponseEntity.ok(movimentacaoService.listarTodos());
+        return ResponseEntity.ok(movimentacaoService.listaMovimentacoes());
     }
 
     @Operation(summary = "Busca uma movimentação pelo ID",
@@ -45,7 +44,7 @@ public class MovimentacaoController {
     @GetMapping("/buscar/{id}")
     public ResponseEntity<MovimentacaoResponseDTO> buscarMovimentacao(
             @Parameter(description = "ID da movimentação", example = "1") @PathVariable Long id) {
-        return ResponseEntity.ok(movimentacaoService.buscarPorId(id));
+        return ResponseEntity.ok(movimentacaoService.buscaMovimentacao(id));
     }
 
     @Operation(summary = "Lista entradas por empresa",
@@ -53,7 +52,7 @@ public class MovimentacaoController {
     @GetMapping("/entradas/empresa/{idEmpresa}")
     public ResponseEntity<List<MovimentacaoResponseDTO>> listarEntradasPorEmpresa(
             @Parameter(description = "ID da empresa", example = "1") @PathVariable Long idEmpresa) {
-        return ResponseEntity.ok(movimentacaoService.listarEntradasPorEmpresa(idEmpresa));
+        return ResponseEntity.ok(movimentacaoService.listaEntradas(idEmpresa));
     }
 
     @Operation(summary = "Lista baixas por empresa",
@@ -61,7 +60,7 @@ public class MovimentacaoController {
     @GetMapping("/baixas/empresa/{idEmpresa}")
     public ResponseEntity<List<MovimentacaoResponseDTO>> listarBaixasPorEmpresa(
             @Parameter(description = "ID da empresa", example = "1") @PathVariable Long idEmpresa) {
-        return ResponseEntity.ok(movimentacaoService.listarBaixasPorEmpresa(idEmpresa));
+        return ResponseEntity.ok(movimentacaoService.listaBaixas(idEmpresa));
     }
 
     @Operation(summary = "Lista entradas por empresa em período",
@@ -71,7 +70,7 @@ public class MovimentacaoController {
             @Parameter(description = "ID da empresa", example = "1") @PathVariable Long idEmpresa,
             @Parameter(description = "Data inicial (YYYY-MM-DD)", example = "2025-01-01") @RequestParam String dataInicio,
             @Parameter(description = "Data final (YYYY-MM-DD)", example = "2025-01-31") @RequestParam String dataFim) {
-        return ResponseEntity.ok(movimentacaoService.listarEntradasPorEmpresaPorPeriodo(idEmpresa, dataInicio, dataFim));
+        return ResponseEntity.ok(movimentacaoService.listaEntradasPorPeriodo(idEmpresa, dataInicio, dataFim));
     }
 
     @Operation(summary = "Lista baixas por empresa em período",
@@ -81,6 +80,6 @@ public class MovimentacaoController {
             @Parameter(description = "ID da empresa", example = "1") @PathVariable Long idEmpresa,
             @Parameter(description = "Data inicial (YYYY-MM-DD)", example = "2025-01-01") @RequestParam String dataInicio,
             @Parameter(description = "Data final (YYYY-MM-DD)", example = "2025-01-31") @RequestParam String dataFim) {
-        return ResponseEntity.ok(movimentacaoService.listarBaixasPorEmpresaPorPeriodo(idEmpresa, dataInicio, dataFim));
+        return ResponseEntity.ok(movimentacaoService.listaBaixasPorPeriodo(idEmpresa, dataInicio, dataFim));
     }
 }

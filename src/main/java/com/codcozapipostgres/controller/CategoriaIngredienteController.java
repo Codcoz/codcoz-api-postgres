@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +22,7 @@ import java.util.List;
 @RequestMapping("/categoria-ingrediente")
 @Tag(name = "Categoria Ingrediente", description = "Métodos para gerenciar categorias de ingredientes.")
 public class CategoriaIngredienteController {
+
     private final CategoriaIngredienteService categoriaIngredienteService;
 
     public CategoriaIngredienteController(CategoriaIngredienteService categoriaIngredienteService) {
@@ -44,14 +44,9 @@ public class CategoriaIngredienteController {
             }
     )
     @PostMapping("/inserir")
-    public ResponseEntity<?> criarCategoriaIngrediente(@RequestBody CategoriaIngredienteRequestDTO dto) {
-        try {
-            CategoriaIngredienteResponseDTO categoria = categoriaIngredienteService.criarCategoriaIngrediente(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("Erro ao criar categoria", e.getMessage(), 400));
-        }
+    public ResponseEntity<CategoriaIngredienteResponseDTO> criaCategoriaIngrediente(@RequestBody CategoriaIngredienteRequestDTO dto) {
+        CategoriaIngredienteResponseDTO categoria = categoriaIngredienteService.criaCategoriaIngrediente(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
     }
 
     @Operation(
@@ -69,17 +64,9 @@ public class CategoriaIngredienteController {
             }
     )
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<?> atualizarCategoriaIngrediente(@Parameter(description = "ID da categoria a ser modificada") @PathVariable Long id, @RequestBody CategoriaIngredienteRequestDTO dto) {
-        try {
-            CategoriaIngredienteResponseDTO categoria = categoriaIngredienteService.atualizarCategoriaIngrediente(id, dto);
-            return ResponseEntity.ok(categoria);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ErrorResponse("Objeto não encontrado", e.getMessage(), 404));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("Erro ao atualizar categoria", e.getMessage(), 400));
-        }
+    public ResponseEntity<CategoriaIngredienteResponseDTO> atualizaCategoriaIngrediente(@Parameter(description = "ID da categoria a ser modificada") @PathVariable Long id, @RequestBody CategoriaIngredienteRequestDTO dto) {
+        CategoriaIngredienteResponseDTO categoria = categoriaIngredienteService.atualizaCategoriaIngrediente(id, dto);
+        return ResponseEntity.ok(categoria);
     }
 
     @Operation(
@@ -96,14 +83,9 @@ public class CategoriaIngredienteController {
             }
     )
     @DeleteMapping("/excluir/{id}")
-    public ResponseEntity<?> deletarCategoriaIngrediente(@Parameter(description = "ID da categoria a ser deletada", example = "1") @PathVariable Long id) {
-        try {
-            categoriaIngredienteService.deletarCategoriaIngrediente(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ErrorResponse("Objeto não encontrado", e.getMessage(), 404));
-        }
+    public ResponseEntity<String> deletarCategoriaIngrediente(@Parameter(description = "ID da categoria a ser deletada", example = "1") @PathVariable Long id) {
+        categoriaIngredienteService.deletaCategoriaIngrediente(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Categoria deletada com sucesso.");
     }
 
     @Operation(
@@ -115,7 +97,7 @@ public class CategoriaIngredienteController {
     )
     @GetMapping("/listar")
     public ResponseEntity<List<CategoriaIngredienteResponseDTO>> listarCategorias() {
-        return ResponseEntity.ok(categoriaIngredienteService.listarTodas());
+        return ResponseEntity.ok(categoriaIngredienteService.listaTodas());
     }
 
     @Operation(
@@ -131,14 +113,9 @@ public class CategoriaIngredienteController {
             }
     )
     @GetMapping("/buscar/{id}")
-    public ResponseEntity<?> buscarCategoriaPorId(
-            @Parameter(description = "ID da categoria a ser buscada", example = "1") @PathVariable Long id) {
-        try {
-            CategoriaIngredienteResponseDTO categoria = categoriaIngredienteService.buscarPorId(id);
-            return ResponseEntity.ok(categoria);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ErrorResponse("Objeto não encontrado", e.getMessage(), 404));
-        }
+    public ResponseEntity<CategoriaIngredienteResponseDTO> buscarCategoriaPorId(
+        @Parameter(description = "ID da categoria a ser buscada", example = "1") @PathVariable Long id) {
+        CategoriaIngredienteResponseDTO categoria = categoriaIngredienteService.buscaPorId(id);
+        return ResponseEntity.ok(categoria);
     }
 }
