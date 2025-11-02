@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class FuncionarioResponseDTO {
-
+    private Long id;
     private String email;
     private String nome;
     private String sobrenome;

@@ -18,7 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/empresa")
-@Tag(name = "Empresa", description = "Endpoints para gerenciamento de empresas.")
+@Tag(name = "Empresa", description = "Operações para gerenciar novas empresas.")
 public class EmpresaController {
 
     private final EmpresaService empresaService;
@@ -42,7 +42,7 @@ public class EmpresaController {
             }
     )
     @PostMapping("/inserir")
-    public ResponseEntity<EmpresaResponseDTO> inserirEmpresa(@RequestBody EmpresaRequestDTO dto) {
+    public ResponseEntity<EmpresaResponseDTO> criaEmpresa(@RequestBody EmpresaRequestDTO dto) {
         return ResponseEntity.ok(empresaService.criaEmpresa(dto));
     }
 
@@ -61,7 +61,7 @@ public class EmpresaController {
             }
     )
     @GetMapping("/buscar/{cnpj}")
-    public ResponseEntity<EmpresaResponseDTO> buscarEmpresa(
+    public ResponseEntity<EmpresaResponseDTO> buscaEmpresa(
             @Parameter(description = "CNPJ da empresa (somente números)", example = "12345678000199")
             @PathVariable String cnpj) {
         return ResponseEntity.ok(empresaService.buscaEmpresaPorCnpj(cnpj));
@@ -81,7 +81,7 @@ public class EmpresaController {
             }
     )
     @DeleteMapping("/deletar/{cnpj}")
-    public ResponseEntity<Map<String, String>> deletarEmpresa(
+    public ResponseEntity<Map<String, String>> deletaEmpresa(
             @Parameter(description = "CNPJ da empresa (somente números)", example = "12345678000199")
             @PathVariable String cnpj) {
 
@@ -103,7 +103,7 @@ public class EmpresaController {
             }
     )
     @GetMapping("/ocupacao-estoque/{idEmpresa}")
-    public ResponseEntity<Map<String, Double>> calcularOcupacaoEstoque(
+    public ResponseEntity<Map<String, Double>> calculaOcupacaoEstoque(
             @Parameter(description = "ID da empresa cadastrada", example = "1")
             @PathVariable Integer idEmpresa) {
 
