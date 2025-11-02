@@ -61,6 +61,21 @@ public class TarefaController {
         return ResponseEntity.ok("Tarefa finalizada com sucesso.");
     }
 
+    @Operation(summary = "Finaliza uma auditoria")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Auditoria finalizada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Tarefa não encontrada", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Erro ao executar procedure", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PutMapping("/finalizar-auditoria/{id}")
+    public ResponseEntity<String> finalizarAuditoria(
+            @PathVariable Integer id,
+            @RequestParam Integer contagem) {
+
+        service.finalizaAuditoria(id, contagem);
+        return ResponseEntity.ok("Auditoria finalizada com sucesso.");
+    }
+
     @Operation(summary = "Busca tarefas concluídas nos últimos dias")
     @GetMapping("/buscar-concluidas/{empresaId}")
     public ResponseEntity<List<TarefaResponseDTO>> buscarTarefasConcluidas(@RequestParam Integer dias,

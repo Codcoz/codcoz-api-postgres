@@ -37,20 +37,23 @@ public class IngredienteService {
     }
 
     @Transactional
-    public IngredienteResponseDTO atualizaIngrediente(IngredienteRequestDTO ingredienteRequestDTO){
-        Ingrediente ingrediente = fromRequestDto(ingredienteRequestDTO);
-        if (ingrediente.getId()!=null && ingredienteRepository.existsById(ingrediente.getId())){
-            if (ingrediente.getNome()!=null){
-                ingrediente.setNome(ingrediente.getNome());
-            }
-            if (ingrediente.getDescricao()!=null){
-                ingrediente.setDescricao(ingrediente.getDescricao());
-            }
-            ingredienteRepository.save(ingrediente);
-            return toResponseDto(ingrediente);
-        }else {
-            throw new EntityNotFoundException("Ingrediente não encontrado");
+    public IngredienteResponseDTO atualizaIngrediente(Long id, IngredienteRequestDTO ingredienteRequestDTO){
+        Ingrediente ingrediente = ingredienteRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Ingrediente não encontrado"));
+        if (ingredienteRequestDTO.getNome()!=null){
+            ingrediente.setNome(ingredienteRequestDTO.getNome());
         }
+        if (ingredienteRequestDTO.getDescricao()!=null){
+            ingrediente.setDescricao(ingredienteRequestDTO.getDescricao());
+        }
+        if (ingredienteRequestDTO.getCategoriaIngrediente()!=null){
+            ingrediente.setCategoriaIngrediente(ingredienteRequestDTO.getCategoriaIngrediente());
+        }
+        if (ingredienteRequestDTO.getQuantidadeMinima()!=null){
+            ingrediente.setQuantidadeMinima(ingredienteRequestDTO.getQuantidadeMinima());
+        }
+        ingredienteRepository.save(ingrediente);
+        return toResponseDto(ingrediente);
     }
 
     @Transactional
