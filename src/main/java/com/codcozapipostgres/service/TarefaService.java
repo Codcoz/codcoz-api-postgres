@@ -114,6 +114,22 @@ public class TarefaService {
             throw new RuntimeException("Erro de acesso ao banco de dados: " + e.getMessage(), e);
         }
     }
+    @Transactional
+    public void finalizaAuditoria(Integer idTarefa, Integer contagem) {
+        try {
+            tarefaRepository.finalizaAuditoria(idTarefa,contagem);
+        }
+        catch (UncategorizedSQLException e) {
+            String mensagem = Objects.requireNonNull(e.getSQLException()).getMessage();
+            if (mensagem.contains("não encontrado")) {
+                throw new EntityNotFoundException("Tarefa não encontrada");
+            }
+            throw new RuntimeException("Erro ao executar procedure: " + mensagem, e);
+        }
+        catch (DataAccessException e) {
+            throw new RuntimeException("Erro de acesso ao banco de dados: " + e.getMessage(), e);
+        }
+    }
 
     @Transactional
     public TarefaResponseDTO criaTarefa(TarefaRequestDTO tarefaRequestDTO) {

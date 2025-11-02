@@ -81,10 +81,10 @@ public class IngredienteController {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @ApiResponse(responseCode = "400", description = "Requisição inválida",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PutMapping("/atualizar")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<IngredienteResponseDTO> atualizarIngrediente(
-            @RequestBody IngredienteRequestDTO ingredienteRequestDTO) {
-        return ResponseEntity.ok(ingredienteService.atualizaIngrediente(ingredienteRequestDTO));
+            @PathVariable Long id, @RequestBody IngredienteRequestDTO ingredienteRequestDTO) {
+        return ResponseEntity.ok(ingredienteService.atualizaIngrediente(id,ingredienteRequestDTO));
     }
 
     @Operation(
