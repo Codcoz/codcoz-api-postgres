@@ -70,7 +70,7 @@ public class TarefaController {
 
     @Operation(summary = "Lista todas as tarefas de uma empresa")
     @GetMapping("/listar/{empresaId}")
-    public ResponseEntity<List<TarefaResponseDTO>> listaTarefas(@PathVariable Long empresaId) {
+    public ResponseEntity<List<TarefaResponseDTO>> listaTarefas(@PathVariable Integer empresaId) {
         return ResponseEntity.ok(service.listaTarefas(empresaId));
     }
 

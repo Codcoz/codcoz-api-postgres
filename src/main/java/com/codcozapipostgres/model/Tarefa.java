@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class Tarefa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @Column(name = "empresa_id")
     private Long empresaId;
     @Column(name="tipo_tarefa_id")

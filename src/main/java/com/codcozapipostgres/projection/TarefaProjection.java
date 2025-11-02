@@ -3,7 +3,7 @@ package com.codcozapipostgres.projection;
 import java.time.LocalDate;
 
 public interface TarefaProjection {
-    Long getId();
+    Integer getId();
     String getEmpresa();
     String getTipoTarefa();
     String getIngrediente();

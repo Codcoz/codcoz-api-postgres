@@ -31,8 +31,8 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
     @Query(value = "SELECT * FROM tarefa WHERE data_conclusao >= :data_conclusao AND empresa_id = :empresaId",nativeQuery = true)
     List<Tarefa> buscaTarefaPorConclusao(@Param("data_conclusao") LocalDate dataConclusao, @Param("empresaId") Long empresaId);
 
-    @Query(value = "SELECT * FROM tarefa WHERE empresa_id = :empresaId", nativeQuery = true)
-    List<Tarefa> listaTarefas(@Param("empresaId")  Long empresaId);
+    @Query(value = "SELECT * FROM func_lista_tarefa(:empresaId)", nativeQuery = true)
+    List<TarefaProjection> listaTarefas(@Param("empresaId") Integer empresaId);
 
     @Procedure(procedureName = "sp_conclui_tarefa")
     void finalizaTarefa(Integer idn);
