@@ -87,11 +87,11 @@ public class TarefaService {
         }
     }
 
-    public List<TarefaResponseDTO> listaTarefas(Long empresaId){
+    public List<TarefaResponseDTO> listaTarefas(Integer empresaId){
         try{
-            List<Tarefa> tarefas = tarefaRepository.listaTarefas(empresaId);
+            List<TarefaProjection> tarefas = tarefaRepository.listaTarefas(empresaId);
             return tarefas.stream()
-                    .map(this::toResponseDTO)
+                    .map(this::fromProjection)
                     .collect(Collectors.toList());
         }catch(EntityNotFoundException e){
             throw new EntityNotFoundException("Nenhuma tarefa encontrada.");

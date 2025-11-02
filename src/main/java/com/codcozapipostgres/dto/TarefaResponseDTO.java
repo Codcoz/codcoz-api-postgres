@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class TarefaResponseDTO {
-    private Long id;
+    private Integer id;
     private String empresa;
     private String tipoTarefa;
     private String ingrediente;
