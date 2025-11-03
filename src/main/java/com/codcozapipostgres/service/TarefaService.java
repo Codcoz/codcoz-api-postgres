@@ -78,9 +78,9 @@ public class TarefaService {
     public List<TarefaResponseDTO> buscaConcluidas(Integer dias, Long empresaId){
         try{
             LocalDate dataLimite = LocalDate.now().minusDays(dias);
-            List<Tarefa> tarefas = tarefaRepository.buscaTarefaPorConclusao(dataLimite, empresaId);
+            List<TarefaProjection> tarefas = tarefaRepository.buscaTarefaPorConclusao(dataLimite, empresaId);
             return tarefas.stream()
-                    .map(this::toResponseDTO)
+                    .map(this::fromProjection)
                     .collect(Collectors.toList());
         }catch(EntityNotFoundException e){
             throw new EntityNotFoundException("Nenhuma tarefa encontrada com esse parâmetro.");
