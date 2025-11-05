@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Setter
 public class FuncionarioResponseDTO {
     private Long id;
+    private Long funcaoId;
     private String email;
     private String nome;
     private String sobrenome;
